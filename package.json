@@ -1,0 +1,29 @@
+{
+    "name": "vscode-tailwind-in-css",
+    "displayName": "Vscode Tailwind In Css",
+    "publisher": "zardoy",
+    "version": "0.0.0-dev",
+    "license": "MIT",
+    "categories": [
+        "Programming Languages",
+        "Other"
+    ],
+    "contributes": {},
+    "scripts": {
+        "start": "vscode-framework start",
+        "lint": "eslint src/**"
+    },
+    "devDependencies": {
+        "@types/node": "^17.0.35",
+        "@types/vscode": "^1.67.0",
+        "@zardoy/tsconfig": "^1.5.0",
+        "@zardoy/vscode-utils": "^0.0.13",
+        "eslint": "^8.16.0",
+        "eslint-config-zardoy": "^0.2.11",
+        "typescript": "^4.6.4",
+        "vscode-framework": "^0.0.18"
+    },
+    "dependencies": {
+        "string-dedent": "^3.0.1"
+    }
+}
