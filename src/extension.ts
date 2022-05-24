@@ -17,6 +17,23 @@ const tailwindNumberAbbreviations: Record<string, (number: number) => string> = 
 }
 
 export const activate = () => {
+    vscode.workspace.onDidChangeTextDocument(({ document, contentChanges }) => {
+        if (document.lineAt(contentChanges[0]!.range.end).text.endsWith('px4')) {
+            console.log('retriggered')
+            void vscode.commands.executeCommand('editor.action.triggerSuggest')
+        }
+    })
+    vscode.languages.registerCompletionItemProvider(['css', 'scss', 'less', 'vue'], {
+        provideCompletionItems(document, position, token, context) {
+            return {
+                items: [
+                    {
+                        label: 'px49',
+                    },
+                ],
+            }
+        },
+    })
     vscode.languages.registerCompletionItemProvider(['css', 'scss', 'less', 'vue'], {
         provideCompletionItems(document, position, token, context) {
             if (!position.character) return
