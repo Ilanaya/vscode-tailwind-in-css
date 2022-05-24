@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@types/node': ^17.0.35
   '@types/vscode': ^1.67.0
+  '@unocss/preset-wind': ^0.34.1
   '@zardoy/tsconfig': ^1.5.0
   '@zardoy/vscode-utils': ^0.0.13
   eslint: ^8.16.0
@@ -12,6 +13,7 @@ specifiers:
   vscode-framework: ^0.0.18
 
 dependencies:
+  '@unocss/preset-wind': 0.34.1
   string-dedent: 3.0.1
 
 devDependencies:
@@ -574,6 +576,23 @@ packages:
       '@typescript-eslint/types': 5.25.0
       eslint-visitor-keys: 3.3.0
     dev: true
+
+  /@unocss/core/0.34.1:
+    resolution: {integrity: sha512-h2AeTLAiBWu6IZzR1tN2H/ypuCbc9CK7t8H/o2ncG22Jfoh6FO09jQPoiRZr72PcpDf2/0snN94iZLnjvPGZOg==}
+    dev: false
+
+  /@unocss/preset-mini/0.34.1:
+    resolution: {integrity: sha512-pEL+/55RfRTfpUplCVzC1l0gLy5cGR1lRSduNz91+FqHmxmyw/rzEoZl0+KhlcNTKWGJY6pM/UYQ3AcbNu5n9w==}
+    dependencies:
+      '@unocss/core': 0.34.1
+    dev: false
+
+  /@unocss/preset-wind/0.34.1:
+    resolution: {integrity: sha512-NDDIdtPv6tX0scNx4o9oF6GPz2U6ufI9uhbqacWhZX43aolJaNM0W5WsEOnw8GrO7RXOlgtChn0r79Uc91Ip0g==}
+    dependencies:
+      '@unocss/core': 0.34.1
+      '@unocss/preset-mini': 0.34.1
+    dev: false
 
   /@vscode/test-web/0.0.15:
     resolution: {integrity: sha512-jYuDcoG66xXEnZnmrHuRkOdZj4BAk/BFzsqa8c/ASFP4Rkua6bCHIDUqii7sVOdmtf2YuTbI3nSqzmn4YvTUfw==}
