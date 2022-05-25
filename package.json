@@ -1,12 +1,19 @@
 {
-    "name": "vscode-tailwind-in-css",
-    "displayName": "Vscode Tailwind In Css",
-    "publisher": "zardoy",
+    "name": "tailwind-in-css",
+    "displayName": "Tailwind In Css",
+    "publisher": "ilscc",
     "version": "0.0.0-dev",
     "license": "MIT",
     "categories": [
         "Programming Languages",
         "Other"
+    ],
+    "activationEvents": [
+        "onLanguage:css",
+        "onLanguage:scss",
+        "onLanguage:sass",
+        "onLanguage:less",
+        "onLanguage:vue"
     ],
     "contributes": {},
     "scripts": {
