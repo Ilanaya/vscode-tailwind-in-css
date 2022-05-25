@@ -2,6 +2,7 @@ import * as vscode from 'vscode'
 import stringDedent from 'string-dedent'
 import { rules } from '@unocss/preset-wind'
 import { getExtensionSetting } from 'vscode-framework'
+import { getNormalizedVueOutline } from '@zardoy/vscode-utils/build/vue'
 
 const tailwindNumberAbbreviations: Record<string, (number: number) => string> = {
     px(number) {
@@ -68,9 +69,25 @@ export const activate = () => {
         },
     })
     vscode.languages.registerCompletionItemProvider(['css', 'scss', 'less', 'vue'], {
-        provideCompletionItems(document, position, token, context) {
+        async provideCompletionItems(document, position, token, context) {
             if (!position.character) return
+            const completions: vscode.CompletionItem[] = []
+            if (document.languageId === 'vue') {
+                const outline = await getNormalizedVueOutline(document.uri)
+                if (!outline) {
+                    console.warn('No default vue outline. Install Volar or Vetur');
+                    return
+                }
+
+                const style = outline.find((item) => item.name === 'style');
+                if (!style) return
+                // check wether position in style.range with style.range.contains
+            }
+
+            // move suggestions from top provider to here
             if (!getExtensionSetting('enableNumberAbbreviation')) return
+            // refactor: if (getExtensionSetting('enableNumberAbbreviation')) {... }
+
             const line = document.lineAt(position)
             const match = cssShorthand.exec(line.text.trim())
             cssShorthand.lastIndex = 0
