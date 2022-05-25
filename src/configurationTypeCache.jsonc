@@ -1,0 +1,19 @@
+// GENERATED. DON'T EDIT MANUALLY
+// md5hash: b01cb723492863293ed68e84cfea8946
+{
+    "type": "object",
+    "properties": {
+        "enableNumberAbbreviation": {
+            "default": true,
+            "type": "boolean"
+        },
+        "enableStaticShortcuts": {
+            "default": true,
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "enableNumberAbbreviation",
+        "enableStaticShortcuts"
+    ]
+}

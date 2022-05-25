@@ -4,4 +4,6 @@ const { patchPackageJson } = require('@zardoy/vscode-utils/build/patchPackageJso
 
 // patchPackageJson({})
 
-module.exports = {}
+module.exports = defineConfig({
+    consoleStatements: false
+})
