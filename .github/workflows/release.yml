@@ -22,3 +22,5 @@ jobs:
           run_install: |
             args: [--frozen-lockfile, --strict-peer-dependencies]
       - run: pnpx zardoy-release vscode-extension-vsix
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
