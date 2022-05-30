@@ -3,13 +3,18 @@ import { rules } from '@unocss/preset-wind'
 
 export default (position: vscode.Position, document: vscode.TextDocument) => {
     const currentLine = document.lineAt(position.line)
+    const colonIndex = currentLine.text.indexOf(':')
+    if (colonIndex !== -1) return
     return rules
-        .filter(rule => typeof rule[0] === 'string' && typeof rule[1] === 'object' && rule[0].startsWith(currentLine.text.trim()))
-        .map(rule => {
-            const rules = Object.entries(rule[1])
-                .map(([prop, value]: [string, string]) => `${prop}: ${value};`)
+        .filter(rule => typeof rule[0] === 'string' && typeof rule[1] === 'object')
+        .map(([shortcut, rule]) => {
+            const rules = (Array.isArray(rule) ? rule : Object.entries(rule))
+                .map(([prop, value]) => {
+                    if (typeof value === 'number') value = `${value.toString()}px`
+                    return `${prop}: ${value!};`
+                })
                 .join('\n')
-            const label = rule[0] as string
+            const label = shortcut as string
             return {
                 label,
                 insertText: rules,

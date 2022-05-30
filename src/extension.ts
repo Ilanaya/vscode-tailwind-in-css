@@ -20,17 +20,17 @@ export const activate = () => {
         async provideCompletionItems(document, position, token, context) {
             const completions: vscode.CompletionItem[] = []
             if (!position.character) return
-            // if (document.languageId === 'vue') {
-            //     const outline = await getNormalizedVueOutline(document.uri)
-            //     if (!outline) {
-            //         console.warn('No default vue outline. Install Volar or Vetur')
-            //         return
-            //     }
+            if (document.languageId === 'vue') {
+                const outline = await getNormalizedVueOutline(document.uri)
+                if (!outline) {
+                    console.warn('No default vue outline. Install Volar or Vetur')
+                    return
+                }
 
-            //     const style = outline.find(item => item.name === 'style')
-            //     if (!style) return
-            //     // check wether position in style.range with style.range.contains
-            // }
+                const style = outline.find(item => item.name === 'style')
+                if (!style) return
+                if (!style.range.contains(position)) return
+            }
 
             if (getExtensionSetting('enableStaticShortcuts')) completions.push(...(getShortcuts(position, document) ?? []))
 
