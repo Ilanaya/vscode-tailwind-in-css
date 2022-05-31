@@ -1,5 +1,6 @@
 import * as vscode from 'vscode'
 import stringDedent from 'string-dedent'
+import { rules } from '@unocss/preset-wind'
 
 export const abbreviationShorthand = /(.+?)(\d+)/
 
@@ -32,17 +33,19 @@ const tailwindNumberAbbreviations: Record<string, (number: number) => string> = 
 
 export default (position: vscode.Position, document: vscode.TextDocument) => {
     const line = document.lineAt(position)
-    const match = abbreviationShorthand.exec(line.text.trim())
-    abbreviationShorthand.lastIndex = 0
-    if (!match) return
-    const foundAbbreviation = tailwindNumberAbbreviations[match[1]!]
-    if (!foundAbbreviation) return
-    let insertText = foundAbbreviation(+match[2]!)
-    insertText += '\n'
-    return [
-        {
-            label: match[0]!,
-            insertText,
-        },
-    ]
+    const rule = [...rules].reverse().find(([regex, getProps]) => regex instanceof RegExp && line.text.trim().match(regex))
+    if (!rule) return
+    const match = line.text.trim().match(rule[0])!
+    console.log('match', rule[0].toString(), match[0], match[1])
+    return []
+    // const foundAbbreviation = tailwindNumberAbbreviations[match[1]!]
+    // if (!foundAbbreviation) return
+    // let insertText = foundAbbreviation(+match[2]!)
+    // insertText += '\n'
+    // return [
+    //     {
+    //         label: match[0]!,
+    //         insertText,
+    //     },
+    // ]
 }
