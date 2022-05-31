@@ -1,4 +1,5 @@
 import * as vscode from 'vscode'
+import { getExtensionSetting } from 'vscode-framework'
 import { rules } from '@unocss/preset-wind'
 
 export default (position: vscode.Position, document: vscode.TextDocument) => {
@@ -10,6 +11,7 @@ export default (position: vscode.Position, document: vscode.TextDocument) => {
         .map(([shortcut, rule]) => {
             const rules = (Array.isArray(rule) ? rule : Object.entries(rule))
                 .filter(([prop, value], i, rulesArr) => {
+                    if (getExtensionSetting('skipVendorPrefix') === 'none') return true
                     const hasUnvendored = (current: string, matchUnvendored: (vendorLength: number, unvendored: string) => boolean) => {
                         const match = /^-\w+-/.exec(current)
                         if (!match) return false

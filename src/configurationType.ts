@@ -7,4 +7,8 @@ export type Configuration = {
      * @default true
      */
     enableStaticShortcuts: boolean
+    /**
+     * @default props
+     */
+    skipVendorPrefix: 'none' | 'props'
 }
