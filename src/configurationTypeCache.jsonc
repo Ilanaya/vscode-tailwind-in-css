@@ -1,5 +1,5 @@
 // GENERATED. DON'T EDIT MANUALLY
-// md5hash: b01cb723492863293ed68e84cfea8946
+// md5hash: b336adb2e852f46310868d4c6bc5db63
 {
     "type": "object",
     "properties": {
@@ -10,10 +10,19 @@
         "enableStaticShortcuts": {
             "default": true,
             "type": "boolean"
+        },
+        "skipVendorPrefix": {
+            "default": "props",
+            "enum": [
+                "none",
+                "props"
+            ],
+            "type": "string"
         }
     },
     "required": [
         "enableNumberAbbreviation",
-        "enableStaticShortcuts"
+        "enableStaticShortcuts",
+        "skipVendorPrefix"
     ]
 }
