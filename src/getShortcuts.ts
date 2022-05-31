@@ -10,15 +10,15 @@ export default (position: vscode.Position, document: vscode.TextDocument) => {
         .map(([shortcut, rule]) => {
             const rules = (Array.isArray(rule) ? rule : Object.entries(rule))
                 .filter(([prop, value], i, rulesArr) => {
-                    const hasUnvendored = (current: string, matchUnvendored: (vendorMatch: RegExpExecArray) => boolean) => {
+                    const hasUnvendored = (current: string, matchUnvendored: (vendorLength: number, unvendored: string) => boolean) => {
                         const match = /^-\w+-/.exec(current)
                         if (!match) return false
-                        return matchUnvendored(match)
+                        return matchUnvendored(match[0]!.length, current.slice(match[0]?.length))
                     }
 
-                    return (
-                        !hasUnvendored(prop, match => rulesArr.some(([rule]) => rule.slice(match[0]!.length))) ||
-                        hasUnvendored(value as string, match => rulesArr.some(([, value]) => (value as string).slice(match[0]!.length)))
+                    return !(
+                        hasUnvendored(prop, (vendorLength, unvendored) => rulesArr.some(([rule]) => unvendored === rule.slice(vendorLength)))
+                        // hasUnvendored(value as string, match => rulesArr.some(([, value]) => (value as string).slice(match[0]!.length)))
                     )
                 })
                 .map(([prop, value]) => {
