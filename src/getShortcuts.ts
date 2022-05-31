@@ -9,6 +9,18 @@ export default (position: vscode.Position, document: vscode.TextDocument) => {
         .filter(rule => typeof rule[0] === 'string' && typeof rule[1] === 'object')
         .map(([shortcut, rule]) => {
             const rules = (Array.isArray(rule) ? rule : Object.entries(rule))
+                .filter(([prop, value], i, rulesArr) => {
+                    const hasUnvendored = (current: string, matchUnvendored: (vendorMatch: RegExpExecArray) => boolean) => {
+                        const match = /^-\w+-/.exec(current)
+                        if (!match) return false
+                        return matchUnvendored(match)
+                    }
+
+                    return (
+                        !hasUnvendored(prop, match => rulesArr.some(([rule]) => rule.slice(match[0]!.length))) ||
+                        hasUnvendored(value as string, match => rulesArr.some(([, value]) => (value as string).slice(match[0]!.length)))
+                    )
+                })
                 .map(([prop, value]) => {
                     if (typeof value === 'number') value = `${value.toString()}px`
                     return `${prop}: ${value!};`
