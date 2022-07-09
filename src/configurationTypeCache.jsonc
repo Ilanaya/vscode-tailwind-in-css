@@ -1,5 +1,5 @@
 // GENERATED. DON'T EDIT MANUALLY
-// md5hash: 064b96f81a9f17cec3f724e08413e560
+// md5hash: 21b3a75fe5a478f851f89f89d0ac236c
 {
     "type": "object",
     "properties": {
@@ -19,7 +19,7 @@
             ],
             "type": "string"
         },
-        "usedShorcuts": {
+        "usedShortcuts": {
             "description": "We can detect already used shortcuts. Example: `flex` if `display: flex` is already used in current scope\nUse `remove` to omit them in suggestions",
             "default": "strikethrough",
             "enum": [
@@ -29,7 +29,7 @@
             ],
             "type": "string"
         },
-        "usedShorcuts.mode": {
+        "usedShortcuts.mode": {
             "description": "`only-rule`: don't display other display-based shortcuts such as `inline`, `block` if `display: flex` is defined",
             "enum": [
                 "only-rule",
@@ -42,7 +42,7 @@
         "enableNumberAbbreviation",
         "enableStaticShortcuts",
         "skipVendorPrefix",
-        "usedShorcuts",
-        "usedShorcuts.mode"
+        "usedShortcuts",
+        "usedShortcuts.mode"
     ]
 }
