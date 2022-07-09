@@ -6,9 +6,10 @@ import { parseCss } from './parseCss'
 
 export default (position: vscode.Position, document: vscode.TextDocument) => {
     const usedShorcuts = getExtensionSetting('usedShorcuts')
+    if (usedShorcuts === 'disable') return 
     const usedShorcutsMode = getExtensionSetting('usedShorcuts.mode')
     const currentLine = document.lineAt(position.line)
-    // TODO don't do parsing when usedShorcuts is disabled
+
     // TODO measure parsing time on big stylesheets
     // TODO check wether we it is parsing when we have existing shorcut word on line (it throws)
     const { usedRules } = parseCss(document.getText(), document.offsetAt(position))
