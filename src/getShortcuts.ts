@@ -11,7 +11,6 @@ export default (position: vscode.Position, document: vscode.TextDocument) => {
     const currentLine = document.lineAt(position.line)
 
     // TODO measure parsing time on big stylesheets
-    // TODO check wether we it is parsing when we have existing shorcut word on line (it throws)
     const { usedRules } = parseCss(document.getText(), document.offsetAt(position))
     if (!/^\s*(\w|-)*\s*$/.test(currentLine.text)) return
     const usedRulesOffsets = new Map<string, number>()
@@ -21,10 +20,8 @@ export default (position: vscode.Position, document: vscode.TextDocument) => {
             .map(([shortcut, rule]): vscode.CompletionItem | undefined => {
                 const cssRulesArr = (Array.isArray(rule) ? rule : Object.entries(rule))
                     .filter(([prop, value], i, rulesArr) => {
-                        if (usedShortcutsMode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value){
+                        if (usedShortcutsMode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value)
                             usedRulesOffsets.set(shortcut as string, usedRules.get(prop)!.offset)
-                            return false
-                        }
  
                         if (getExtensionSetting('skipVendorPrefix') === 'none') return true
                         const hasUnvendoredRule = (current: string, matchUnvendored: (vendorLength: number, unvendored: string) => boolean) => {
@@ -42,13 +39,13 @@ export default (position: vscode.Position, document: vscode.TextDocument) => {
                         if (typeof value === 'number') value = `${value.toString()}px`
                         return `${prop}: ${value!};`
                     })
-                const usedShortcut = cssRulesArr.length === 0
-                if (usedShortcut && usedShortcuts === 'remove') return undefined
+
                 const label = shortcut as string
+                const usedShortcut = usedRulesOffsets.has(label) 
+                if (usedShortcut && usedShortcuts === 'remove') return undefined
                 const cssRules = cssRulesArr.join('\n')
 
                 const currentShortcutOffset = usedRulesOffsets.get(label)
-
                 return {
                     label,
                     insertText: cssRules,
