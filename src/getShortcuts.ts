@@ -3,16 +3,16 @@ import { getExtensionSetting } from 'vscode-framework'
 import { rules } from '@unocss/preset-wind'
 import { compact } from '@zardoy/utils'
 import { parseCss } from './parseCss'
+import { SimpleVirtualDocument } from './shared'
 
-export default (position: vscode.Position, document: vscode.TextDocument) => {
+export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument) => {
     const usedShortcuts = getExtensionSetting('usedShortcuts')
-    if (usedShortcuts === 'disable') return 
+    if (usedShortcuts === 'disable') return
     const usedShortcutsMode = getExtensionSetting('usedShortcuts.mode')
-    const currentLine = document.lineAt(position.line)
 
     // TODO measure parsing time on big stylesheets
-    const { usedRules } = parseCss(document.getText(), document.offsetAt(position))
-    if (!/^\s*(\w|-)*\s*$/.test(currentLine.text)) return
+    const { usedRules } = parseCss(fullText, offset)
+    if (!/^\s*(\w|-)*\s*$/.test(lineText)) return
     const usedRulesOffsets = new Map<string, number>()
     return compact(
         rules
@@ -22,7 +22,7 @@ export default (position: vscode.Position, document: vscode.TextDocument) => {
                     .filter(([prop, value], i, rulesArr) => {
                         if (usedShortcutsMode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value)
                             usedRulesOffsets.set(shortcut as string, usedRules.get(prop)!.offset)
- 
+
                         if (getExtensionSetting('skipVendorPrefix') === 'none') return true
                         const hasUnvendoredRule = (current: string, matchUnvendored: (vendorLength: number, unvendored: string) => boolean) => {
                             const match = /^-\w+-/.exec(current)
@@ -41,7 +41,7 @@ export default (position: vscode.Position, document: vscode.TextDocument) => {
                     })
 
                 const label = shortcut as string
-                const usedShortcut = usedRulesOffsets.has(label) 
+                const usedShortcut = usedRulesOffsets.has(label)
                 if (usedShortcut && usedShortcuts === 'remove') return undefined
                 const cssRules = cssRulesArr.join('\n')
 
@@ -50,7 +50,7 @@ export default (position: vscode.Position, document: vscode.TextDocument) => {
                     label,
                     insertText: cssRules,
                     tags: usedShortcut ? [vscode.CompletionItemTag.Deprecated] : [],
-                    detail: usedShortcut ? `Used on line ${(document.lineAt(document.positionAt(currentShortcutOffset!)).lineNumber + 1).toString()}` : '',
+                    detail: usedShortcut ? `Used on line ${startLine + getLineByOffset(fullText, currentShortcutOffset!)!}` : '',
                     // TODO button using markdown syntax (replace n rules) and shortcut for replacing these used rules
                     documentation: new vscode.MarkdownString().appendCodeblock(
                         `.${label} {\n${cssRules
@@ -58,9 +58,19 @@ export default (position: vscode.Position, document: vscode.TextDocument) => {
                             .map(rule => ' '.repeat(2) + rule)
                             .join('\n')}\n}`,
                         'css',
-                        ),
+                    ),
                     kind: vscode.CompletionItemKind.Event,
                 }
             }),
     )
+}
+
+const getLineByOffset = (text: string, offset: number) => {
+    let sum = 0
+    for (const [i, line] of text.split('\n').entries()) {
+        sum += line.length
+        if (offset < sum) return i + 1
+    }
+
+    return undefined
 }

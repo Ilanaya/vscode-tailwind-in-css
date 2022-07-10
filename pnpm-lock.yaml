@@ -6,7 +6,7 @@ specifiers:
   '@unocss/preset-wind': ^0.34.1
   '@zardoy/tsconfig': ^1.5.0
   '@zardoy/utils': ^0.0.7
-  '@zardoy/vscode-utils': ^0.0.15
+  '@zardoy/vscode-utils': ^0.0.16
   eslint: ^8.16.0
   eslint-config-zardoy: ^0.2.11
   postcss: ^8.4.14
@@ -18,7 +18,7 @@ specifiers:
 dependencies:
   '@unocss/preset-wind': 0.34.1
   '@zardoy/utils': 0.0.7
-  '@zardoy/vscode-utils': 0.0.15_unawbvmxtbzqonmqpdnuuihcuq
+  '@zardoy/vscode-utils': 0.0.16_unawbvmxtbzqonmqpdnuuihcuq
   postcss: 8.4.14
   string-dedent: 3.0.1
   vitest: 0.16.0
@@ -636,7 +636,7 @@ packages:
     dependencies:
       lodash.compact: 3.0.1
       rambda: 6.9.0
-      type-fest: 2.13.0
+      type-fest: 2.16.0
     dev: false
 
   /@zardoy/utils/0.0.7:
@@ -648,8 +648,8 @@ packages:
       type-fest: 2.13.0
     dev: false
 
-  /@zardoy/vscode-utils/0.0.15_unawbvmxtbzqonmqpdnuuihcuq:
-    resolution: {integrity: sha512-4efnm2Anv2p7DiBCb+uz7mijMSUuBf9xdzI2lEVkwpGrxy1qZC4zmYIrLTMFy9cceu0h5VPvF0vktXBTeQ/pxQ==}
+  /@zardoy/vscode-utils/0.0.16_unawbvmxtbzqonmqpdnuuihcuq:
+    resolution: {integrity: sha512-j0cMRweGK+6T+qE1NsH5Wx4ryIxfyFj6WF4UD/YGejKKStnAJiAxVL6hK0kPOw04p3Z8zOIOGVjgu7rUNrI4xA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     peerDependencies:
       '@types/vscode': ^1.65.0
@@ -4251,6 +4251,11 @@ packages:
 
   /type-fest/2.13.0:
     resolution: {integrity: sha512-lPfAm42MxE4/456+QyIaaVBAwgpJb6xZ8PRu09utnhPdWwcyj9vgy6Sq0Z5yNbJ21EdxB5dRU/Qg8bsyAMtlcw==}
+    engines: {node: '>=12.20'}
+    dev: false
+
+  /type-fest/2.16.0:
+    resolution: {integrity: sha512-qpaThT2HQkFb83gMOrdKVsfCN7LKxP26Yq+smPzY1FqoHRjqmjqHXA7n5Gkxi8efirtbeEUxzfEdePthQWCuHw==}
     engines: {node: '>=12.20'}
     dev: false
 

@@ -33,7 +33,7 @@
     "dependencies": {
         "@unocss/preset-wind": "^0.34.1",
         "@zardoy/utils": "^0.0.7",
-        "@zardoy/vscode-utils": "^0.0.15",
+        "@zardoy/vscode-utils": "^0.0.16",
         "postcss": "^8.4.14",
         "string-dedent": "^3.0.1",
         "vitest": "^0.16.0",

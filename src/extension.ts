@@ -1,8 +1,9 @@
 import * as vscode from 'vscode'
-import { getExtensionSetting } from 'vscode-framework'
-import { getNormalizedVueOutline } from '@zardoy/vscode-utils/build/vue'
+import { getStylesRange } from '@zardoy/vscode-utils/build/styles'
+import { getExtensionSetting, registerActiveDevelopmentCommand } from 'vscode-framework'
 import getAbbreviations, { abbreviationShorthand } from './getAbbreviations'
 import getShortcuts from './getShortcuts'
+import { SimpleVirtualDocument } from './shared'
 
 export const activate = () => {
     vscode.workspace.onDidChangeTextDocument(({ document, contentChanges }) => {
@@ -19,24 +20,28 @@ export const activate = () => {
     vscode.languages.registerCompletionItemProvider(['css', 'scss', 'less', 'vue'], {
         async provideCompletionItems(document, position, token, context) {
             const completions: vscode.CompletionItem[] = []
+            // exit early on line start
             if (!position.character) return
-            if (document.languageId === 'vue') {
-                const outline = await getNormalizedVueOutline(document.uri)
-                if (!outline) {
-                    console.warn('No default vue outline. Install Volar or Vetur')
-                    return
-                }
+            const stylesRange = await getStylesRange(document, position)
+            if (!stylesRange) return
 
-                const style = outline.find(item => item.name === 'style')
-                if (!style) return
-                if (!style.range.contains(position)) return
+            const virtualDocument: SimpleVirtualDocument = {
+                fullText: document.getText(stylesRange),
+                lineText: document.lineAt(position).text,
+                offset: document.offsetAt(position) - document.offsetAt(stylesRange.start),
+                startLine: stylesRange.start.line,
             }
-
-            if (getExtensionSetting('enableStaticShortcuts')) completions.push(...(getShortcuts(position, document) ?? []))
+            if (getExtensionSetting('enableStaticShortcuts')) completions.push(...(getShortcuts(virtualDocument) ?? []))
 
             if (getExtensionSetting('enableNumberAbbreviation')) completions.push(...(getAbbreviations(position, document) ?? []))
 
             return { items: completions }
         },
+    })
+
+    registerActiveDevelopmentCommand(async () => {
+        const editor = vscode.window.activeTextEditor!
+        const range = await getStylesRange(editor.document, editor.selection.end)
+        console.log(range ? editor.document.getText(range) : 'not raneg')
     })
 }
