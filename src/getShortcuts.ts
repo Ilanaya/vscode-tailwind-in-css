@@ -12,16 +12,12 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
     // TODO measure parsing time on big stylesheets
     const { usedRules } = parseCss(fullText, offset)
     if (!/^\s*(\w|-)*\s*$/.test(lineText)) return
-    const usedRulesOffsets = new Map<string, number>()
     return compact(
         rules
             .filter(rule => typeof rule[0] === 'string' && typeof rule[1] === 'object')
             .map(([shortcut, rule]): vscode.CompletionItem | undefined => {
                 const cssRulesArr = (Array.isArray(rule) ? rule : Object.entries(rule))
                     .filter(([prop, value], i, rulesArr) => {
-                        if (usedShortcuts !== 'disable' && (usedShortcutsMode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value))
-                            usedRulesOffsets.set(shortcut as string, usedRules.get(prop)!.offset)
-
                         if (getExtensionSetting('skipVendorPrefix') === 'none') return true
                         const hasUnvendoredRule = (current: string, matchUnvendored: (vendorLength: number, unvendored: string) => boolean) => {
                             const match = /^-\w+-/.exec(current)
@@ -40,21 +36,33 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
                     })
 
                 const label = shortcut as string
-                const usedShortcut = usedRulesOffsets.has(label)
+                const usedShortcut = cssRulesArr.every(rule => {
+                    const [prop, value] = parseCssRule(rule)
+                    return usedShortcuts !== 'disable' && (usedShortcutsMode === 'only-rule' ? usedRules.get(prop!) : usedRules.get(prop!)?.value === value)
+                })
+
                 if (usedShortcut && usedShortcuts === 'remove') return undefined
                 const cssRules = cssRulesArr.join('\n')
-
-                const currentShortcutOffset = usedRulesOffsets.get(label)
                 return {
                     label,
                     insertText: cssRules,
                     tags: usedShortcut ? [vscode.CompletionItemTag.Deprecated] : [],
-                    detail: usedShortcut ? `Used on line ${startLine + getLineByOffset(fullText, currentShortcutOffset!)!}` : '',
                     // TODO button using markdown syntax (replace n rules) and shortcut for replacing these used rules
                     documentation: new vscode.MarkdownString().appendCodeblock(
                         `.${label} {\n${cssRules
                             .split('\n')
-                            .map(rule => ' '.repeat(2) + rule)
+                            .map(rule => {
+                                if (usedShortcuts === 'disable' || usedShortcuts === 'remove') return `${' '.repeat(2)}${rule}`
+
+                                const [prop, value] = parseCssRule(rule)
+                                const currentShortcutOffset = usedRules.get(prop!)?.offset
+
+                                return `${' '.repeat(2)}${rule} ${
+                                    (usedShortcutsMode === 'only-rule' ? usedRules.get(prop!) : usedRules.get(prop!)?.value === value)
+                                        ? `//L${getLineByOffset(fullText, currentShortcutOffset!)!}`
+                                        : ''
+                                }`
+                            })
                             .join('\n')}\n}`,
                         'css',
                     ),
@@ -72,4 +80,12 @@ const getLineByOffset = (text: string, offset: number) => {
     }
 
     return undefined
+}
+
+const parseCssRule = (rule: string) => {
+    const columnIndex = rule.indexOf(':')
+    const prop = rule.slice(0, columnIndex)
+    const value = rule.slice(columnIndex + 1, -1).trim()
+
+    return [prop, value]
 }
