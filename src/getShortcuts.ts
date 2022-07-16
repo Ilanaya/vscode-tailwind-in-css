@@ -7,7 +7,6 @@ import { SimpleVirtualDocument } from './shared'
 
 export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument) => {
     const usedShortcuts = getExtensionSetting('usedShortcuts')
-    if (usedShortcuts === 'disable') return
     const usedShortcutsMode = getExtensionSetting('usedShortcuts.mode')
 
     // TODO measure parsing time on big stylesheets
@@ -20,7 +19,7 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
             .map(([shortcut, rule]): vscode.CompletionItem | undefined => {
                 const cssRulesArr = (Array.isArray(rule) ? rule : Object.entries(rule))
                     .filter(([prop, value], i, rulesArr) => {
-                        if (usedShortcutsMode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value)
+                        if (usedShortcuts !== 'disable' && (usedShortcutsMode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value))
                             usedRulesOffsets.set(shortcut as string, usedRules.get(prop)!.offset)
 
                         if (getExtensionSetting('skipVendorPrefix') === 'none') return true
