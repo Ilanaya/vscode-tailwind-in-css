@@ -39,7 +39,7 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
                 })
 
                 const label = shortcut as string
-                const usedShortcut = cssRules.every(([prop, value])=> usedShortcutConfig.main !== 'disable' && (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value))
+                const usedShortcut = cssDeclarations.every(([prop, value])=> usedShortcutConfig.main !== 'disable' && (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value))
 
                 if (usedShortcut && usedShortcutConfig.main === 'remove') return undefined
                 const cssRulesString = cssRules.join('\n')
@@ -49,12 +49,11 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
                     tags: usedShortcut ? [vscode.CompletionItemTag.Deprecated] : [],
                     // TODO button using markdown syntax (replace n rules) and shortcut for replacing these used rules
                     documentation: new vscode.MarkdownString().appendCodeblock(
-                        `.${label} {\n${cssRulesString
-                            .split('\n')
-                            .map(rule => {
+                        `.${label} {\n${cssDeclarations
+                            .map(([prop, value]) => {
+                                const rule = `${prop}: ${value!};`
                                 if (usedShortcutConfig.main === 'disable' || usedShortcutConfig.main === 'remove') return `${' '.repeat(2)}${rule}`
 
-                                const [prop, value] = parseCssRule(rule)
                                 const currentShortcutOffset = usedRules.get(prop)?.offset
 
                                 return `${' '.repeat(2)}${rule} ${
@@ -82,10 +81,3 @@ const getLineByOffset = (text: string, offset: number) => {
     return undefined
 }
 
-// const parseCssRule = (rule: string) => {
-//     const columnIndex = rule.indexOf(':')
-//     const prop = rule.slice(0, columnIndex)
-//     const value = rule.slice(columnIndex + 1, -1).trim()
-
-//     return [prop, value]
-// }
