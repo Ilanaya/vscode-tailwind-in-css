@@ -3,9 +3,10 @@ lockfileVersion: 5.4
 specifiers:
   '@types/node': ^17.0.35
   '@types/vscode': ^1.67.0
+  '@unocss/core': ^0.44.5
   '@unocss/preset-wind': ^0.34.1
   '@zardoy/tsconfig': ^1.5.0
-  '@zardoy/utils': ^0.0.7
+  '@zardoy/utils': ^0.0.8
   '@zardoy/vscode-utils': ^0.0.16
   eslint: ^8.16.0
   eslint-config-zardoy: ^0.2.11
@@ -16,8 +17,9 @@ specifiers:
   vscode-framework: ^0.0.18
 
 dependencies:
+  '@unocss/core': 0.44.5
   '@unocss/preset-wind': 0.34.1
-  '@zardoy/utils': 0.0.7
+  '@zardoy/utils': 0.0.8
   '@zardoy/vscode-utils': 0.0.16_unawbvmxtbzqonmqpdnuuihcuq
   postcss: 8.4.14
   string-dedent: 3.0.1
@@ -585,6 +587,10 @@ packages:
     resolution: {integrity: sha512-h2AeTLAiBWu6IZzR1tN2H/ypuCbc9CK7t8H/o2ncG22Jfoh6FO09jQPoiRZr72PcpDf2/0snN94iZLnjvPGZOg==}
     dev: false
 
+  /@unocss/core/0.44.5:
+    resolution: {integrity: sha512-IxFg0b0Exudko5akYLA4kfdv2MNYpQlgrB33N+UcHb8z0eGENBStq/ZKjwneplHV9RiSOM4d7nPYkK7Id1RgPA==}
+    dev: false
+
   /@unocss/preset-mini/0.34.1:
     resolution: {integrity: sha512-pEL+/55RfRTfpUplCVzC1l0gLy5cGR1lRSduNz91+FqHmxmyw/rzEoZl0+KhlcNTKWGJY6pM/UYQ3AcbNu5n9w==}
     dependencies:
@@ -639,13 +645,13 @@ packages:
       type-fest: 2.16.0
     dev: false
 
-  /@zardoy/utils/0.0.7:
-    resolution: {integrity: sha512-1giNsv3+IJo+xKMwRWT6FcxL27CrwWNtvGzlPF4fIlv2NaRvIUfttUiTJnNPp6XQ/mIBdM2hp5ueMio0m0H98Q==}
+  /@zardoy/utils/0.0.8:
+    resolution: {integrity: sha512-xBtHUibwUbBfP2ZA24hIBp3RVX6SIkXYRKffJJeknfCmVJLnrt2t5d7qY3UuruYPc8p9gOm8FZK3fOQvrjhXjw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       lodash.compact: 3.0.1
       rambda: 6.9.0
-      type-fest: 2.13.0
+      type-fest: 2.17.0
     dev: false
 
   /@zardoy/vscode-utils/0.0.16_unawbvmxtbzqonmqpdnuuihcuq:
@@ -4249,13 +4255,13 @@ packages:
     engines: {node: '>=12.20'}
     dev: false
 
-  /type-fest/2.13.0:
-    resolution: {integrity: sha512-lPfAm42MxE4/456+QyIaaVBAwgpJb6xZ8PRu09utnhPdWwcyj9vgy6Sq0Z5yNbJ21EdxB5dRU/Qg8bsyAMtlcw==}
+  /type-fest/2.16.0:
+    resolution: {integrity: sha512-qpaThT2HQkFb83gMOrdKVsfCN7LKxP26Yq+smPzY1FqoHRjqmjqHXA7n5Gkxi8efirtbeEUxzfEdePthQWCuHw==}
     engines: {node: '>=12.20'}
     dev: false
 
-  /type-fest/2.16.0:
-    resolution: {integrity: sha512-qpaThT2HQkFb83gMOrdKVsfCN7LKxP26Yq+smPzY1FqoHRjqmjqHXA7n5Gkxi8efirtbeEUxzfEdePthQWCuHw==}
+  /type-fest/2.17.0:
+    resolution: {integrity: sha512-U+g3/JVXnOki1kLSc+xZGPRll3Ah9u2VIG6Sn9iH9YX6UkPERmt6O/0fIyTgsd2/whV0+gAaHAg8fz6sG1QzMA==}
     engines: {node: '>=12.20'}
     dev: false
 
