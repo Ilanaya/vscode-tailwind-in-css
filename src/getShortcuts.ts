@@ -18,7 +18,7 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
         rules
             .filter(rule => typeof rule[0] === 'string' && typeof rule[1] === 'object')
             .map(([shortcut, rule]): vscode.CompletionItem | undefined => {
-                const cssRulesArr = (Array.isArray(rule) ? rule : Object.entries(rule))
+                const cssDeclarations = (Array.isArray(rule) ? rule : Object.entries(rule))
                     .filter(([prop, value], i, rulesArr) => {
                         if (getExtensionSetting('skipVendorPrefix') === 'none') return true
                         const hasUnvendoredRule = (current: string, matchUnvendored: (vendorLength: number, unvendored: string) => boolean) => {
@@ -32,38 +32,33 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
                             // hasUnvendored(value as string, match => rulesArr.some(([, value]) => (value as string).slice(match[0]!.length)))
                         )
                     })
-                    .map(([prop, value]) => {
-                        if (typeof value === 'number') value = `${value.toString()}px`
-                        return `${prop}: ${value!};`
-                    })
-
-                const label = shortcut as string
-                const usedShortcut = cssRulesArr.every(rule => {
-                    const [prop, value] = parseCssRule(rule)
-                    return (
-                        usedShortcutConfig.main !== 'disable' &&
-                        (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop!) : usedRules.get(prop!)?.value === value)
-                    )
+                    
+                const cssRules = cssDeclarations.map(([prop, value]) => {
+                    if (typeof value === 'number') value = `${value.toString()}px`
+                    return `${prop}: ${value!};`
                 })
 
+                const label = shortcut as string
+                const usedShortcut = cssRules.every(([prop, value])=> usedShortcutConfig.main !== 'disable' && (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value))
+
                 if (usedShortcut && usedShortcutConfig.main === 'remove') return undefined
-                const cssRules = cssRulesArr.join('\n')
+                const cssRulesString = cssRules.join('\n')
                 return {
                     label,
-                    insertText: cssRules,
+                    insertText: cssRulesString,
                     tags: usedShortcut ? [vscode.CompletionItemTag.Deprecated] : [],
                     // TODO button using markdown syntax (replace n rules) and shortcut for replacing these used rules
                     documentation: new vscode.MarkdownString().appendCodeblock(
-                        `.${label} {\n${cssRules
+                        `.${label} {\n${cssRulesString
                             .split('\n')
                             .map(rule => {
                                 if (usedShortcutConfig.main === 'disable' || usedShortcutConfig.main === 'remove') return `${' '.repeat(2)}${rule}`
 
                                 const [prop, value] = parseCssRule(rule)
-                                const currentShortcutOffset = usedRules.get(prop!)?.offset
+                                const currentShortcutOffset = usedRules.get(prop)?.offset
 
                                 return `${' '.repeat(2)}${rule} ${
-                                    (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop!) : usedRules.get(prop!)?.value === value)
+                                    (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value)
                                         ? `//L${getLineByOffset(fullText, currentShortcutOffset!)!}`
                                         : ''
                                 }`
@@ -87,10 +82,10 @@ const getLineByOffset = (text: string, offset: number) => {
     return undefined
 }
 
-const parseCssRule = (rule: string) => {
-    const columnIndex = rule.indexOf(':')
-    const prop = rule.slice(0, columnIndex)
-    const value = rule.slice(columnIndex + 1, -1).trim()
+// const parseCssRule = (rule: string) => {
+//     const columnIndex = rule.indexOf(':')
+//     const prop = rule.slice(0, columnIndex)
+//     const value = rule.slice(columnIndex + 1, -1).trim()
 
-    return [prop, value]
-}
+//     return [prop, value]
+// }
