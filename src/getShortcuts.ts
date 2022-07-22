@@ -6,8 +6,10 @@ import { parseCss } from './parseCss'
 import { SimpleVirtualDocument } from './shared'
 
 export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument) => {
-    const usedShortcuts = getExtensionSetting('usedShortcuts')
-    const usedShortcutsMode = getExtensionSetting('usedShortcuts.mode')
+    const usedShortcutConfig = {
+        main: getExtensionSetting('usedShortcuts'),
+        mode: getExtensionSetting('usedShortcuts.mode'),
+    }
 
     // TODO measure parsing time on big stylesheets
     const { usedRules } = parseCss(fullText, offset)
@@ -38,10 +40,13 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
                 const label = shortcut as string
                 const usedShortcut = cssRulesArr.every(rule => {
                     const [prop, value] = parseCssRule(rule)
-                    return usedShortcuts !== 'disable' && (usedShortcutsMode === 'only-rule' ? usedRules.get(prop!) : usedRules.get(prop!)?.value === value)
+                    return (
+                        usedShortcutConfig.main !== 'disable' &&
+                        (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop!) : usedRules.get(prop!)?.value === value)
+                    )
                 })
 
-                if (usedShortcut && usedShortcuts === 'remove') return undefined
+                if (usedShortcut && usedShortcutConfig.main === 'remove') return undefined
                 const cssRules = cssRulesArr.join('\n')
                 return {
                     label,
@@ -52,13 +57,13 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
                         `.${label} {\n${cssRules
                             .split('\n')
                             .map(rule => {
-                                if (usedShortcuts === 'disable' || usedShortcuts === 'remove') return `${' '.repeat(2)}${rule}`
+                                if (usedShortcutConfig.main === 'disable' || usedShortcutConfig.main === 'remove') return `${' '.repeat(2)}${rule}`
 
                                 const [prop, value] = parseCssRule(rule)
                                 const currentShortcutOffset = usedRules.get(prop!)?.offset
 
                                 return `${' '.repeat(2)}${rule} ${
-                                    (usedShortcutsMode === 'only-rule' ? usedRules.get(prop!) : usedRules.get(prop!)?.value === value)
+                                    (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop!) : usedRules.get(prop!)?.value === value)
                                         ? `//L${getLineByOffset(fullText, currentShortcutOffset!)!}`
                                         : ''
                                 }`
