@@ -4,7 +4,7 @@ import Node from 'postcss/lib/node'
 import Rule from 'postcss/lib/rule'
 import { Declaration } from 'postcss'
 
-const findUsedRules = (stylesContent:string, offset: number) => {
+const findUsedRules = (stylesContent: string, offset: number) => {
     const usedRules = new Map<string, { value: string; offset: number }>()
 
     const parsed = postcssParser(stylesContent)
@@ -44,8 +44,13 @@ export const parseCss = (stylesContent: string, offset: number) => {
         usedRules = findUsedRules(stylesContent, offset)
     } catch (error) {
         if (error.reason === 'Unknown word') {
-            const stylesWithoutErrorString = stylesContent.split('\r\n').filter((str, i) => i !== error.input.line - 1).join('\r\n')
-            usedRules = findUsedRules(stylesWithoutErrorString, offset - error.input.endColumn)
+            const stylesWithoutErrorString = stylesContent
+                .split(/\n\r?/)
+                .filter((str, i) => i !== error.input.line - 1)
+                .join('\n')
+            try {
+                usedRules = findUsedRules(stylesWithoutErrorString, offset - error.input.endColumn)
+            } catch {}
         }
     }
 
