@@ -19,6 +19,7 @@ experiment-*
 .DS_Store
 .env.local
 .env.*.local
+src/configurationTypeCache.jsonc
 
 .vscode-test
 .vscode-test-web
