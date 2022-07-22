@@ -18,28 +18,31 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
         rules
             .filter(rule => typeof rule[0] === 'string' && typeof rule[1] === 'object')
             .map(([shortcut, rule]): vscode.CompletionItem | undefined => {
-                const cssDeclarations = (Array.isArray(rule) ? rule : Object.entries(rule))
-                    .filter(([prop, value], i, rulesArr) => {
-                        if (getExtensionSetting('skipVendorPrefix') === 'none') return true
-                        const hasUnvendoredRule = (current: string, matchUnvendored: (vendorLength: number, unvendored: string) => boolean) => {
-                            const match = /^-\w+-/.exec(current)
-                            if (!match) return false
-                            return matchUnvendored(match[0]!.length, current.slice(match[0]!.length))
-                        }
+                const cssDeclarations = (Array.isArray(rule) ? rule : Object.entries(rule)).filter(([prop, value], i, rulesArr) => {
+                    if (getExtensionSetting('skipVendorPrefix') === 'none') return true
+                    const hasUnvendoredRule = (current: string, matchUnvendored: (vendorLength: number, unvendored: string) => boolean) => {
+                        const match = /^-\w+-/.exec(current)
+                        if (!match) return false
+                        return matchUnvendored(match[0]!.length, current.slice(match[0]!.length))
+                    }
 
-                        return !(
-                            hasUnvendoredRule(prop, (vendorLength, unvendored) => rulesArr.some(([rule]) => unvendored === rule.slice(vendorLength)))
-                            // hasUnvendored(value as string, match => rulesArr.some(([, value]) => (value as string).slice(match[0]!.length)))
-                        )
-                    })
-                    
+                    return !(
+                        hasUnvendoredRule(prop, (vendorLength, unvendored) => rulesArr.some(([rule]) => unvendored === rule.slice(vendorLength)))
+                        // hasUnvendored(value as string, match => rulesArr.some(([, value]) => (value as string).slice(match[0]!.length)))
+                    )
+                })
+
                 const cssRules = cssDeclarations.map(([prop, value]) => {
                     if (typeof value === 'number') value = `${value.toString()}px`
                     return `${prop}: ${value!};`
                 })
 
                 const label = shortcut as string
-                const usedShortcut = cssDeclarations.every(([prop, value])=> usedShortcutConfig.main !== 'disable' && (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value))
+                const usedShortcut = cssDeclarations.every(
+                    ([prop, value]) =>
+                        usedShortcutConfig.main !== 'disable' &&
+                        (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value),
+                )
 
                 if (usedShortcut && usedShortcutConfig.main === 'remove') return undefined
                 const cssRulesString = cssRules.join('\n')
@@ -80,4 +83,3 @@ const getLineByOffset = (text: string, offset: number) => {
 
     return undefined
 }
-
