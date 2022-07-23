@@ -46,5 +46,5 @@ test('throws with incorrent syntax', () => {
 }`
     const pos = str.indexOf('|')
     const strToParse = str.slice(0, pos) + str.slice(pos + 1)
-    expect(parseCss(strToParse, pos)).not.toThrowErrorMatchingSnapshot(`"expected is not a function"`)
+    expect(parseCss(strToParse, pos)).not.toThrowErrorMatchingInlineSnapshot(`"expected is not a function"`)
 })
