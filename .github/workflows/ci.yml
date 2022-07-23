@@ -26,6 +26,7 @@ jobs:
             args: [--frozen-lockfile, --strict-peer-dependencies]
       - run: pnpm lint
       - run: pnpm tsc
+      - run: pnpm vscode-utils prepareFrameworkBuild
       - run: pnpm build
       # - uses: GabrielBB/xvfb-action@v1.6
       #   with:

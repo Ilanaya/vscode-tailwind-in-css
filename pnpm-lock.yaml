@@ -5,7 +5,7 @@ specifiers:
   '@types/vscode': ^1.67.0
   '@unocss/preset-wind': ^0.34.1
   '@zardoy/tsconfig': ^1.5.0
-  '@zardoy/vscode-utils': ^0.0.15
+  '@zardoy/vscode-utils': ^0.0.17
   eslint: ^8.16.0
   eslint-config-zardoy: ^0.2.11
   string-dedent: ^3.0.1
@@ -14,7 +14,7 @@ specifiers:
 
 dependencies:
   '@unocss/preset-wind': 0.34.1
-  '@zardoy/vscode-utils': 0.0.15_unawbvmxtbzqonmqpdnuuihcuq
+  '@zardoy/vscode-utils': 0.0.17_unawbvmxtbzqonmqpdnuuihcuq
   string-dedent: 3.0.1
   vscode-framework: 0.0.18_7z6inc52bbdzqfvbvz5ml4oycq
 
@@ -430,7 +430,6 @@ packages:
 
   /@types/vscode/1.67.0:
     resolution: {integrity: sha512-GH8BDf8cw9AC9080uneJfulhSa7KHSMI2s/CyKePXoGNos9J486w2V4YKoeNUqIEkW4hKoEAWp6/cXTwyGj47g==}
-    dev: true
 
   /@types/yauzl/2.10.0:
     resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}
@@ -621,12 +620,13 @@ packages:
     dependencies:
       lodash.compact: 3.0.1
       rambda: 6.9.0
-      type-fest: 2.13.0
+      type-fest: 2.17.0
     dev: false
 
-  /@zardoy/vscode-utils/0.0.15_unawbvmxtbzqonmqpdnuuihcuq:
-    resolution: {integrity: sha512-4efnm2Anv2p7DiBCb+uz7mijMSUuBf9xdzI2lEVkwpGrxy1qZC4zmYIrLTMFy9cceu0h5VPvF0vktXBTeQ/pxQ==}
+  /@zardoy/vscode-utils/0.0.17_unawbvmxtbzqonmqpdnuuihcuq:
+    resolution: {integrity: sha512-6SLGzlT4A542msg0Ct4HlDaXrYg6EFIM3RNS2P+DcG2Ng3FcYMdjfzMtW8Ar36j70h03kLM3GhWixdtZ1Mj2dw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    hasBin: true
     peerDependencies:
       '@types/vscode': ^1.65.0
       vscode-framework: ^0.0.18
@@ -637,6 +637,7 @@ packages:
       '@types/vscode': 1.67.0
       '@zardoy/utils': 0.0.4
       chokidar: 3.5.3
+      commander: 9.4.0
       execa: 5.1.1
       rambda: 7.1.4
       untildify: 4.0.0
@@ -1027,6 +1028,11 @@ packages:
   /commander/8.3.0:
     resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
     engines: {node: '>= 12'}
+    dev: false
+
+  /commander/9.4.0:
+    resolution: {integrity: sha512-sRPT+umqkz90UA8M1yqYfnHlZA7fF6nSphDtxeywPZ49ysjxDQybzk13CL+mXekDRG92skbcqCLVovuCusNmFw==}
+    engines: {node: ^12.20.0 || >=14}
     dev: false
 
   /concat-map/0.0.1:
@@ -2793,7 +2799,8 @@ packages:
     dev: false
 
   /lodash.compact/3.0.1:
-    resolution: {integrity: sha1-VAzjg3dFl1gHRx4WtKK6IeclbKU=}
+    resolution: {integrity: sha512-2ozeiPi+5eBXW1CLtzjk8XQFhQOEMwwfxblqeq6EGyTxZJ1bPATqilY0e6g2SLQpP4KuMeuioBhEnWz5Pr7ICQ==}
+    dev: false
 
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
@@ -3390,6 +3397,7 @@ packages:
 
   /rambda/6.9.0:
     resolution: {integrity: sha512-yosVdGg1hNGkXPzqGiOYNEpXKjEOxzUCg2rB0l+NKdyCaSf4z+i5ojbN0IqDSezMMf71YEglI+ZUTgTffn5afw==}
+    dev: false
 
   /rambda/7.1.4:
     resolution: {integrity: sha512-bPK8sSiVHIC7CqdWga8R+hRi5hfc4hK6S01lZW4KrLwSNryQoKaCOJA9GNiF20J7Nbe1vejRfR37/ASQXFL5EA==}
@@ -3932,9 +3940,10 @@ packages:
     engines: {node: '>=12.20'}
     dev: false
 
-  /type-fest/2.13.0:
-    resolution: {integrity: sha512-lPfAm42MxE4/456+QyIaaVBAwgpJb6xZ8PRu09utnhPdWwcyj9vgy6Sq0Z5yNbJ21EdxB5dRU/Qg8bsyAMtlcw==}
+  /type-fest/2.17.0:
+    resolution: {integrity: sha512-U+g3/JVXnOki1kLSc+xZGPRll3Ah9u2VIG6Sn9iH9YX6UkPERmt6O/0fIyTgsd2/whV0+gAaHAg8fz6sG1QzMA==}
     engines: {node: '>=12.20'}
+    dev: false
 
   /type-fest/2.3.4:
     resolution: {integrity: sha512-2UdQc7cx8F4Ky81Xj7NYQKPhZVtDFbtorrkairIW66rW7xQj5msAhioXa04HqEdP4MD4K2G6QAF7Zyiw/Hju1Q==}
@@ -4010,7 +4019,6 @@ packages:
     resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: true
 
   /unbox-primitive/1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}

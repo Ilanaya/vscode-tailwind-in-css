@@ -29,8 +29,8 @@
         "typescript": "^4.6.4"
     },
     "dependencies": {
-        "@zardoy/vscode-utils": "^0.0.15",
         "@unocss/preset-wind": "^0.34.1",
+        "@zardoy/vscode-utils": "^0.0.17",
         "string-dedent": "^3.0.1",
         "vscode-framework": "^0.0.18"
     },
