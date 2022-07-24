@@ -2,7 +2,7 @@ import { parseCss } from './parseCss'
 
 import type {} from 'vitest/globals'
 
-test('works', () => {
+test('basic', () => {
     const str = /* scss*/ `
 .test {
     display: flex;
@@ -38,7 +38,7 @@ test('works with incorrect syntax', () => {
       }
     `)
 })
-test('throws with incorrent syntax', () => {
+test("doesn't throw with incorrent syntax", () => {
     const str = /* scss*/ `
 .test {
     display: flex;
