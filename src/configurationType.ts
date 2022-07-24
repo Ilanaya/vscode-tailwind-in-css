@@ -19,6 +19,7 @@ export type Configuration = {
     usedShortcuts: 'disable' | 'remove' | 'strikethrough'
     /**
      * `only-rule`: don't display other display-based shortcuts such as `inline`, `block` if `display: flex` is defined
+     * @default rule-and-value
      */
     'usedShortcuts.mode': 'rule-and-value' | 'only-rule'
 }
