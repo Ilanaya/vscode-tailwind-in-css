@@ -2,8 +2,8 @@
 const { defineConfig } = require('@zardoy/vscode-utils/build/defineConfig.cjs')
 const { patchPackageJson } = require('@zardoy/vscode-utils/build/patchPackageJson.cjs')
 
-// patchPackageJson({})
+patchPackageJson({})
 
 module.exports = defineConfig({
-    consoleStatements: false
+    consoleStatements: false,
 })
