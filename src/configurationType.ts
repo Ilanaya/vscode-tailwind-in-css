@@ -2,7 +2,7 @@ export type Configuration = {
     /**
      * @default true
      */
-    enableNumberAbbreviation: boolean
+    enableAbbreviation: boolean
     /**
      * @default true
      */

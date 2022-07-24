@@ -1,18 +1,18 @@
 import * as vscode from 'vscode'
 import { getStylesRange } from '@zardoy/vscode-utils/build/styles'
 import { getExtensionSetting, registerActiveDevelopmentCommand } from 'vscode-framework'
-import getAbbreviations, { abbreviationShorthand } from './getAbbreviations'
+import getAbbreviations, { abbreviationShorthand } from './abbreviations/getAbbreviations'
 import getShortcuts from './getShortcuts'
 import { SimpleVirtualDocument } from './shared'
 
 export const activate = () => {
     vscode.workspace.onDidChangeTextDocument(({ document, contentChanges }) => {
         if (vscode.window.activeTextEditor?.document.uri !== document.uri) return
-        if (!getExtensionSetting('enableNumberAbbreviation')) return
+        if (!getExtensionSetting('enableAbbreviation')) return
         const endPosition = contentChanges[0]?.range.end
         if (!endPosition) return
 
-        if (abbreviationShorthand.test(document.lineAt(endPosition).text.trim())) void vscode.commands.executeCommand('editor.action.triggerSuggest')
+        if (/^\w+(-[\w\d]+)*-\d+$/.test(document.lineAt(endPosition).text.trim())) void vscode.commands.executeCommand('editor.action.triggerSuggest')
 
         abbreviationShorthand.lastIndex = 0
     })
@@ -33,7 +33,7 @@ export const activate = () => {
             }
             if (getExtensionSetting('enableStaticShortcuts')) completions.push(...(getShortcuts(virtualDocument) ?? []))
 
-            if (getExtensionSetting('enableNumberAbbreviation')) completions.push(...(getAbbreviations(position, document) ?? []))
+            if (getExtensionSetting('enableAbbreviation')) completions.push(...((await getAbbreviations(position, document)) ?? []))
 
             return { items: completions }
         },
