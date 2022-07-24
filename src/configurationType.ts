@@ -16,7 +16,7 @@ export type Configuration = {
      * Use `remove` to omit them in suggestions
      * @default strikethrough
      */
-    usedShortcuts: 'disable' | 'remove' | 'strikethrough'
+    'usedShortcuts.enable': 'disable' | 'remove' | 'strikethrough'
     /**
      * `only-rule`: don't display other display-based shortcuts such as `inline`, `block` if `display: flex` is defined
      * @default rule-and-value

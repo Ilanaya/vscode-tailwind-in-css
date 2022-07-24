@@ -7,7 +7,7 @@ import ourRules from './static/ourRules'
 
 export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument) => {
     const usedShortcutConfig = {
-        main: getExtensionSetting('usedShortcuts'),
+        enable: getExtensionSetting('usedShortcuts.enable'),
         mode: getExtensionSetting('usedShortcuts.mode'),
     }
 
@@ -34,17 +34,17 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
 
                 const cssRules = cssDeclarations.map(([prop, value]) => {
                     if (typeof value === 'number') value = `${value.toString()}px`
-                    return `${prop}: ${value};`
+                    return `${prop}: ${value!};`
                 })
 
                 const label = shortcut as string
                 const shortcutIsUsed = cssDeclarations.every(
                     ([prop, value]) =>
-                        usedShortcutConfig.main !== 'disable' &&
+                        usedShortcutConfig.enable !== 'disable' &&
                         (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value),
                 )
 
-                if (shortcutIsUsed && usedShortcutConfig.main === 'remove') return undefined
+                if (shortcutIsUsed && usedShortcutConfig.enable === 'remove') return undefined
                 const cssRulesString = cssRules.join('\n')
                 return {
                     label,
@@ -54,8 +54,8 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
                     documentation: new vscode.MarkdownString().appendCodeblock(
                         `.${label} {\n${cssDeclarations
                             .map(([prop, value]) => {
-                                const rule = `${prop}: ${value};`
-                                if (usedShortcutConfig.main === 'disable' || usedShortcutConfig.main === 'remove') return `${' '.repeat(2)}${rule}`
+                                const rule = `${prop}: ${value!};`
+                                if (usedShortcutConfig.enable === 'disable' || usedShortcutConfig.enable === 'remove') return `${' '.repeat(2)}${rule}`
 
                                 const currentShortcutOffset = usedRules.get(prop)?.offset
 
