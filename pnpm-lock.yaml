@@ -7,7 +7,7 @@ specifiers:
   '@unocss/preset-wind': ^0.34.1
   '@zardoy/tsconfig': ^1.5.0
   '@zardoy/utils': ^0.0.8
-  '@zardoy/vscode-utils': ^0.0.16
+  '@zardoy/vscode-utils': ^0.0.17
   eslint: ^8.16.0
   eslint-config-zardoy: ^0.2.11
   postcss: ^8.4.14
@@ -20,7 +20,7 @@ dependencies:
   '@unocss/core': 0.44.5
   '@unocss/preset-wind': 0.34.1
   '@zardoy/utils': 0.0.8
-  '@zardoy/vscode-utils': 0.0.16_unawbvmxtbzqonmqpdnuuihcuq
+  '@zardoy/vscode-utils': 0.0.17_unawbvmxtbzqonmqpdnuuihcuq
   postcss: 8.4.14
   string-dedent: 3.0.1
   vitest: 0.16.0
@@ -642,7 +642,7 @@ packages:
     dependencies:
       lodash.compact: 3.0.1
       rambda: 6.9.0
-      type-fest: 2.16.0
+      type-fest: 2.17.0
     dev: false
 
   /@zardoy/utils/0.0.8:
@@ -654,9 +654,10 @@ packages:
       type-fest: 2.17.0
     dev: false
 
-  /@zardoy/vscode-utils/0.0.16_unawbvmxtbzqonmqpdnuuihcuq:
-    resolution: {integrity: sha512-j0cMRweGK+6T+qE1NsH5Wx4ryIxfyFj6WF4UD/YGejKKStnAJiAxVL6hK0kPOw04p3Z8zOIOGVjgu7rUNrI4xA==}
+  /@zardoy/vscode-utils/0.0.17_unawbvmxtbzqonmqpdnuuihcuq:
+    resolution: {integrity: sha512-6SLGzlT4A542msg0Ct4HlDaXrYg6EFIM3RNS2P+DcG2Ng3FcYMdjfzMtW8Ar36j70h03kLM3GhWixdtZ1Mj2dw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    hasBin: true
     peerDependencies:
       '@types/vscode': ^1.65.0
       vscode-framework: ^0.0.18
@@ -667,6 +668,7 @@ packages:
       '@types/vscode': 1.67.0
       '@zardoy/utils': 0.0.4
       chokidar: 3.5.3
+      commander: 9.4.0
       execa: 5.1.1
       rambda: 7.1.4
       untildify: 4.0.0
@@ -1078,6 +1080,11 @@ packages:
   /commander/8.3.0:
     resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
     engines: {node: '>= 12'}
+    dev: false
+
+  /commander/9.4.0:
+    resolution: {integrity: sha512-sRPT+umqkz90UA8M1yqYfnHlZA7fF6nSphDtxeywPZ49ysjxDQybzk13CL+mXekDRG92skbcqCLVovuCusNmFw==}
+    engines: {node: ^12.20.0 || >=14}
     dev: false
 
   /concat-map/0.0.1:
@@ -4252,11 +4259,6 @@ packages:
 
   /type-fest/2.12.2:
     resolution: {integrity: sha512-qt6ylCGpLjZ7AaODxbpyBZSs9fCI9SkL3Z9q2oxMBQhs/uyY+VD8jHA8ULCGmWQJlBgqvO3EJeAngOHD8zQCrQ==}
-    engines: {node: '>=12.20'}
-    dev: false
-
-  /type-fest/2.16.0:
-    resolution: {integrity: sha512-qpaThT2HQkFb83gMOrdKVsfCN7LKxP26Yq+smPzY1FqoHRjqmjqHXA7n5Gkxi8efirtbeEUxzfEdePthQWCuHw==}
     engines: {node: '>=12.20'}
     dev: false
 
