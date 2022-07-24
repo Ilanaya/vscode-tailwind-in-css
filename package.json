@@ -32,9 +32,9 @@
     },
     "dependencies": {
         "@unocss/core": "^0.44.5",
-        "@unocss/preset-wind": "^0.34.1",
         "@zardoy/utils": "^0.0.8",
         "postcss": "^8.4.14",
+        "@unocss/preset-wind": "^0.34.1",
         "@zardoy/vscode-utils": "^0.0.17",
         "string-dedent": "^3.0.1",
         "vitest": "^0.16.0",
