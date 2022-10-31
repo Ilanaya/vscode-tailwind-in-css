@@ -7,7 +7,7 @@ import { SimpleVirtualDocument } from './shared'
 
 export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument) => {
     const usedShortcutConfig = {
-        main: getExtensionSetting('usedShortcuts'),
+        main: getExtensionSetting('usedShortcuts.enable'),
         mode: getExtensionSetting('usedShortcuts.mode'),
     }
 
