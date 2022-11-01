@@ -48,5 +48,10 @@
         "trailingComma": "all",
         "arrowParens": "avoid",
         "printWidth": 160
+    },
+    "release": {
+        "preset": {
+            "publishOvsx": false
+        }
     }
 }
