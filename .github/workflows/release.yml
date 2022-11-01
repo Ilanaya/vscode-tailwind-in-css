@@ -23,5 +23,5 @@ jobs:
             args: [--frozen-lockfile, --strict-peer-dependencies]
       - run: pnpx zardoy-release vscode-extension
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
