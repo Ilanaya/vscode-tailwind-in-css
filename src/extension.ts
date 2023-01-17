@@ -16,13 +16,16 @@ export const activate = () => {
 
         abbreviationShorthand.lastIndex = 0
     })
+    const taggedTemplateStylesLangs = new Set(['javascript', 'typescript', 'javascriptreact', 'typescriptreact'])
 
-    vscode.languages.registerCompletionItemProvider(['css', 'scss', 'less', 'vue'], {
+    vscode.languages.registerCompletionItemProvider(['css', 'scss', 'less', 'vue', ...taggedTemplateStylesLangs], {
         async provideCompletionItems(document, position, token, context) {
             const completions: vscode.CompletionItem[] = []
             // exit early on line start
             if (!position.character) return
-            const stylesRange = await getStylesRange(document, position)
+            const stylesRange = taggedTemplateStylesLangs.has(document.languageId)
+                ? new vscode.Range(0, 0, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY)
+                : await getStylesRange(document, position)
             if (!stylesRange) return
 
             const virtualDocument: SimpleVirtualDocument = {

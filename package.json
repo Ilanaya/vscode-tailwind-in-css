@@ -13,7 +13,11 @@
         "onLanguage:scss",
         "onLanguage:sass",
         "onLanguage:less",
-        "onLanguage:vue"
+        "onLanguage:vue",
+        "onLanguage:javascript",
+        "onLanguage:typescript",
+        "onLanguage:javascriptreact",
+        "onLanguage:typescriptreact"
     ],
     "contributes": {},
     "scripts": {
