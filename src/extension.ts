@@ -23,9 +23,21 @@ export const activate = () => {
             const completions: vscode.CompletionItem[] = []
             // exit early on line start
             if (!position.character) return
-            const stylesRange = taggedTemplateStylesLangs.has(document.languageId)
-                ? new vscode.Range(0, 0, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY)
-                : await getStylesRange(document, position)
+            const { kindName, start, end } =
+                ((await vscode.commands.executeCommand('tsEssentialPlugins.getNodeAtPosition', { offset: document.offsetAt(position) })) as any) ?? {}
+
+            // TODO: make it work in LastTemplateToken cases
+            const supportedSyntaxKinds = new Set(['TemplateHead', 'TemplateMiddle', 'FirstTemplateToken' /* 'LastTemplateToken ' */])
+
+            const isInTaggedTemplate =
+                supportedSyntaxKinds.has(kindName) &&
+                /\s*.*?(styled|css)\.?.*/.test(document.getText(new vscode.Range(document.positionAt(start).with(undefined, 0), document.positionAt(start))))
+
+            const stylesRange =
+                taggedTemplateStylesLangs.has(document.languageId) && isInTaggedTemplate
+                    ? new vscode.Range(document.positionAt(start), document.positionAt(end))
+                    : await getStylesRange(document, position)
+
             if (!stylesRange) return
 
             const virtualDocument: SimpleVirtualDocument = {
