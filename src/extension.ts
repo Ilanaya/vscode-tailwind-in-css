@@ -35,7 +35,7 @@ export const activate = () => {
 
             const stylesRange =
                 taggedTemplateStylesLangs.has(document.languageId) && isInTaggedTemplate
-                    ? new vscode.Range(document.positionAt(start), document.positionAt(end))
+                    ? new vscode.Range(document.positionAt(start).translate(undefined, 1), document.positionAt(end).translate(undefined, -1))
                     : await getStylesRange(document, position)
 
             if (!stylesRange) return

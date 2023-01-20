@@ -2,7 +2,7 @@
 import postcssParser from 'postcss/lib/parse'
 import Node from 'postcss/lib/node'
 import Rule from 'postcss/lib/rule'
-import { Declaration } from 'postcss'
+import { Declaration, Root } from 'postcss'
 
 const findUsedRules = (stylesContent: string, offset: number) => {
     const usedRules = new Map<string, { value: string; offset: number }>()
@@ -27,6 +27,14 @@ const findUsedRules = (stylesContent: string, offset: number) => {
     }
 
     const foundNode = findPositionContainingNode(offset, parsed.nodes)
+
+    // styled component case
+    if (!foundNode && parsed instanceof Root && 'nodes' in parsed) {
+        for (const node of parsed.nodes as Node[])
+            if (node instanceof Declaration) {
+                usedRules.set(node.prop, { value: node.value, offset: node.source!.start!.offset })
+            }
+    }
 
     if (foundNode instanceof Rule) {
         for (const node of foundNode.nodes)
