@@ -36,7 +36,7 @@ export const activate = () => {
 
             const isInTaggedTemplate =
                 supportedSyntaxKinds.has(kindName) &&
-                /\s*.*?(styled|css)\.?.*/.test(document.getText(new vscode.Range(document.positionAt(start).with(undefined, 0), document.positionAt(start))))
+                /(styled\.[\w\d]+|css)$/.test(document.getText(new vscode.Range(document.positionAt(start).with(undefined, 0), document.positionAt(start))))
 
             const stylesRange =
                 taggedTemplateStylesLangs.has(document.languageId) && isInTaggedTemplate
