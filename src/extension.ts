@@ -4,6 +4,7 @@ import { getExtensionSetting, registerActiveDevelopmentCommand } from 'vscode-fr
 import getAbbreviations, { abbreviationShorthand } from './abbreviations/getAbbreviations'
 import getShortcuts from './getShortcuts'
 import { SimpleVirtualDocument } from './shared'
+import getTaggedTemplateLangsStylesRange from './getTaggedTemplateLangsStylesRange'
 
 export const activate = () => {
     vscode.workspace.onDidChangeTextDocument(({ document, contentChanges }) => {
@@ -23,25 +24,10 @@ export const activate = () => {
             const completions: vscode.CompletionItem[] = []
             // exit early on line start
             if (!position.character) return
-            const { kindName, start, end } =
-                ((await vscode.commands.executeCommand('tsEssentialPlugins.getNodeAtPosition', { offset: document.offsetAt(position) })) as any) ?? {}
 
-            // TODO: make it work in LastTemplateToken cases
-            // Tokens explanation:
-            // FirstTemplateToken (actually NoSubstitutionTemplateLiteral): css`text|`
-            // TemplateHead: css`text|${...}`
-            // TemplateMiddle: css`${...}text|${...}`
-            // LastTemplateToken: (actually TemplateTail): css`${...}text|`
-            const supportedSyntaxKinds = new Set(['FirstTemplateToken', 'TemplateHead', 'TemplateMiddle' /* 'LastTemplateToken ' */])
-
-            const isInTaggedTemplate =
-                supportedSyntaxKinds.has(kindName) &&
-                /(styled\.[\w\d]+|css)$/.test(document.getText(new vscode.Range(document.positionAt(start).with(undefined, 0), document.positionAt(start))))
-
-            const stylesRange =
-                taggedTemplateStylesLangs.has(document.languageId) && isInTaggedTemplate
-                    ? new vscode.Range(document.positionAt(start).translate(undefined, 1), document.positionAt(end).translate(undefined, -1))
-                    : await getStylesRange(document, position)
+            const stylesRange = taggedTemplateStylesLangs.has(document.languageId)
+                ? await getTaggedTemplateLangsStylesRange(document, position)
+                : await getStylesRange(document, position)
 
             if (!stylesRange) return
 
