@@ -27,7 +27,12 @@ export const activate = () => {
                 ((await vscode.commands.executeCommand('tsEssentialPlugins.getNodeAtPosition', { offset: document.offsetAt(position) })) as any) ?? {}
 
             // TODO: make it work in LastTemplateToken cases
-            const supportedSyntaxKinds = new Set(['TemplateHead', 'TemplateMiddle', 'FirstTemplateToken' /* 'LastTemplateToken ' */])
+            // Tokens explanation:
+            // FirstTemplateToken (actually NoSubstitutionTemplateLiteral): css`text|`
+            // TemplateHead: css`text|${...}`
+            // TemplateMiddle: css`${...}text|${...}`
+            // LastTemplateToken: (actually TemplateTail): css`${...}text|`
+            const supportedSyntaxKinds = new Set(['FirstTemplateToken', 'TemplateHead', 'TemplateMiddle' /* 'LastTemplateToken ' */])
 
             const isInTaggedTemplate =
                 supportedSyntaxKinds.has(kindName) &&
