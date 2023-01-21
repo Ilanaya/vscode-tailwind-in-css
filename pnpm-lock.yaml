@@ -3,8 +3,8 @@ lockfileVersion: 5.4
 specifiers:
   '@types/node': ^17.0.35
   '@types/vscode': ^1.67.0
-  '@unocss/core': ^0.44.5
-  '@unocss/preset-wind': ^0.34.1
+  '@unocss/core': ^0.48.4
+  '@unocss/preset-wind': ^0.48.4
   '@zardoy/tsconfig': ^1.5.0
   '@zardoy/utils': ^0.0.8
   '@zardoy/vscode-utils': ^0.0.17
@@ -17,8 +17,8 @@ specifiers:
   vscode-framework: ^0.0.18
 
 dependencies:
-  '@unocss/core': 0.44.5
-  '@unocss/preset-wind': 0.34.1
+  '@unocss/core': 0.48.4
+  '@unocss/preset-wind': 0.48.4
   '@zardoy/utils': 0.0.8
   '@zardoy/vscode-utils': 0.0.17_unawbvmxtbzqonmqpdnuuihcuq
   postcss: 8.4.14
@@ -583,25 +583,21 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@unocss/core/0.34.1:
-    resolution: {integrity: sha512-h2AeTLAiBWu6IZzR1tN2H/ypuCbc9CK7t8H/o2ncG22Jfoh6FO09jQPoiRZr72PcpDf2/0snN94iZLnjvPGZOg==}
+  /@unocss/core/0.48.4:
+    resolution: {integrity: sha512-ecoTzblwEIQGD4QhMo1U36rVwvTR9XW+gtJRhCnVyjy7L23AbGJu2xkRZSsH3k/v0gs0gx/SHNfyOqA52BNfoA==}
     dev: false
 
-  /@unocss/core/0.44.5:
-    resolution: {integrity: sha512-IxFg0b0Exudko5akYLA4kfdv2MNYpQlgrB33N+UcHb8z0eGENBStq/ZKjwneplHV9RiSOM4d7nPYkK7Id1RgPA==}
-    dev: false
-
-  /@unocss/preset-mini/0.34.1:
-    resolution: {integrity: sha512-pEL+/55RfRTfpUplCVzC1l0gLy5cGR1lRSduNz91+FqHmxmyw/rzEoZl0+KhlcNTKWGJY6pM/UYQ3AcbNu5n9w==}
+  /@unocss/preset-mini/0.48.4:
+    resolution: {integrity: sha512-UNiBZ7rDP0ubXRu0r6WWy/2Fn70+xur0e/7cR4rMjyboQtMCKxYU6H6svZcraoX2ie1rjAIuZmMbSLooTVoovg==}
     dependencies:
-      '@unocss/core': 0.34.1
+      '@unocss/core': 0.48.4
     dev: false
 
-  /@unocss/preset-wind/0.34.1:
-    resolution: {integrity: sha512-NDDIdtPv6tX0scNx4o9oF6GPz2U6ufI9uhbqacWhZX43aolJaNM0W5WsEOnw8GrO7RXOlgtChn0r79Uc91Ip0g==}
+  /@unocss/preset-wind/0.48.4:
+    resolution: {integrity: sha512-V4nuAgbeek7wVNChchQZTwDB3ww6sSdcNsYZII8gpGdf7EvFmgI6ZkpIcSCXHBBbCiFWckWfcqIBEY/pchBLUw==}
     dependencies:
-      '@unocss/core': 0.34.1
-      '@unocss/preset-mini': 0.34.1
+      '@unocss/core': 0.48.4
+      '@unocss/preset-mini': 0.48.4
     dev: false
 
   /@vscode/test-web/0.0.15:
