@@ -8,8 +8,7 @@ import getTaggedTemplateLangsStylesRange from './getTaggedTemplateLangsStylesRan
 
 export const activate = () => {
     vscode.workspace.onDidChangeTextDocument(({ document, contentChanges }) => {
-        if (vscode.window.activeTextEditor?.document.uri !== document.uri) return
-        if (!getExtensionSetting('enableAbbreviation')) return
+        if (vscode.window.activeTextEditor?.document.uri !== document.uri || !getExtensionSetting('enableAbbreviation')) return
         const endPosition = contentChanges[0]?.range.end
         if (!endPosition) return
 
@@ -35,7 +34,9 @@ export const activate = () => {
                 fullText: document.getText(stylesRange),
                 lineText: document.lineAt(position).text,
                 offset: document.offsetAt(position) - document.offsetAt(stylesRange.start),
+                position,
                 startLine: stylesRange.start.line,
+                getWordRangeAtPosition: document.getWordRangeAtPosition,
             }
             if (getExtensionSetting('enableStaticShortcuts')) completions.push(...(getShortcuts(virtualDocument) ?? []))
 
@@ -48,6 +49,6 @@ export const activate = () => {
     registerActiveDevelopmentCommand(async () => {
         const editor = vscode.window.activeTextEditor!
         const range = await getStylesRange(editor.document, editor.selection.end)
-        console.log(range ? editor.document.getText(range) : 'not raneg')
+        console.log(range ? editor.document.getText(range) : 'not range')
     })
 }

@@ -25,6 +25,7 @@ export default async (position: vscode.Position, document: vscode.TextDocument):
                     .join('\n')}\n}`,
                 'css',
             ),
+            range: document.getWordRangeAtPosition(position, /[-\w\d]+/),
         },
     ]
 }

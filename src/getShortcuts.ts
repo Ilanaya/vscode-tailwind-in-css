@@ -5,7 +5,7 @@ import { compact } from '@zardoy/utils'
 import { parseCss } from './parseCss'
 import { SimpleVirtualDocument } from './shared'
 
-export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument) => {
+export default ({ fullText, lineText, offset, position, getWordRangeAtPosition }: SimpleVirtualDocument) => {
     const usedShortcutConfig = {
         main: getExtensionSetting('usedShortcuts.enable'),
         mode: getExtensionSetting('usedShortcuts.mode'),
@@ -69,6 +69,7 @@ export default ({ fullText, lineText, offset, startLine }: SimpleVirtualDocument
                         'css',
                     ),
                     kind: vscode.CompletionItemKind.Event,
+                    range: getWordRangeAtPosition(position, /[-\w\d]+/),
                 }
             }),
     )
