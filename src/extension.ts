@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 import { getStylesRange } from '@zardoy/vscode-utils/build/styles'
-import { getExtensionSetting, registerActiveDevelopmentCommand } from 'vscode-framework'
+import { getExtensionSetting } from 'vscode-framework'
 import getAbbreviations, { abbreviationShorthand } from './abbreviations/getAbbreviations'
 import getShortcuts from './getShortcuts'
 import { SimpleVirtualDocument } from './shared'
@@ -44,11 +44,5 @@ export const activate = () => {
 
             return { items: completions }
         },
-    })
-
-    registerActiveDevelopmentCommand(async () => {
-        const editor = vscode.window.activeTextEditor!
-        const range = await getStylesRange(editor.document, editor.selection.end)
-        console.log(range ? editor.document.getText(range) : 'not range')
     })
 }
