@@ -2,7 +2,7 @@
 import postcssParser from 'postcss/lib/parse'
 import Node from 'postcss/lib/node'
 import Rule from 'postcss/lib/rule'
-import { Declaration, Root } from 'postcss'
+import { CssSyntaxError, Declaration, Root } from 'postcss'
 
 const findUsedRules = (stylesContent: string, offset: number) => {
     const usedRules = new Map<string, { value: string; offset: number }>()
@@ -51,18 +51,37 @@ export const parseCss = (stylesContent: string, offset: number) => {
     try {
         usedRules = findUsedRules(stylesContent, offset)
     } catch (error) {
-        if (error.reason === 'Unknown word') {
-            const stylesWithoutErrorString = stylesContent
-                .split(/\n\r?/)
-                .filter((str, i) => i !== error.input.line - 1)
-                .join('\n')
-            try {
-                usedRules = findUsedRules(stylesWithoutErrorString, offset - error.input.endColumn)
-            } catch {}
+        if (error.name === 'CssSyntaxError' && error instanceof CssSyntaxError && error.reason === 'Unknown word') {
+            const { normalizedStyles, normalizedOffset } = normalizeStylesContent(stylesContent, offset, error)
+            usedRules = findUsedRules(normalizedStyles, normalizedOffset)
         }
     }
 
     return {
         usedRules,
+    }
+}
+
+const normalizeStylesContent = (stylesContent: string, offset: number, error: CssSyntaxError) => {
+    const normalizedStyles = stylesContent
+        .split(/\n\r?/)
+        .filter((str, i) => {
+            if (error.input) {
+                return i !== error.input.line - 1
+            }
+
+            return true
+        })
+        .join('\n')
+    const normalizedOffset = offset - (error.input!.endColumn ?? 0)
+    try {
+        postcssParser(normalizedStyles)
+        return { normalizedStyles, normalizedOffset }
+    } catch (error) {
+        if (error.name === 'CssSyntaxError' && error instanceof CssSyntaxError && (error.reason === 'Unknown word' || error.reason.includes('Unexpected'))) {
+            return normalizeStylesContent(normalizedStyles, normalizedOffset, error)
+        }
+
+        return { normalizedStyles, normalizedOffset }
     }
 }

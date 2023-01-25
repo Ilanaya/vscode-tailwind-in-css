@@ -1,21 +1,25 @@
 import * as vscode from 'vscode'
 
 export default async (document: vscode.TextDocument, position: vscode.Position) => {
-    // TODO: make it work in LastTemplateToken cases
     // Tokens explanation:
     // FirstTemplateToken (actually NoSubstitutionTemplateLiteral): css`text|`
     // TemplateHead: css`text|${...}`
     // TemplateMiddle: css`${...}text|${...}`
     // LastTemplateToken: (actually TemplateTail): css`${...}text|`
-    const supportedSyntaxKinds = new Set(['FirstTemplateToken', 'TemplateHead', 'TemplateMiddle' /* 'LastTemplateToken ' */])
+    const supportedSyntaxKinds = new Set(['FirstTemplateToken', 'TemplateHead', 'TemplateMiddle', 'LastTemplateToken'])
 
-    const { kindName, start, end } =
+    const nodes =
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ((await vscode.commands.executeCommand('tsEssentialPlugins.getNodeAtPosition', { offset: document.offsetAt(position) })) as any) ?? {}
-    const isInTaggedTemplate =
-        supportedSyntaxKinds.has(kindName) &&
-        /(styled\.[\w\d]+|css)$/.test(document.getText(new vscode.Range(document.positionAt(start).with(undefined, 0), document.positionAt(start))))
+        ((await vscode.commands.executeCommand('tsEssentialPlugins.getNodePath', { offset: document.offsetAt(position) })) as any) ?? {}
+
+    if (!supportedSyntaxKinds.has(nodes[nodes.length - 1].kindName)) return
+
+    const { start: templateExprStart, end: templateExprEnd } = nodes.find(({ kindName }) => kindName === 'TemplateExpression')
+
+    const isInTaggedTemplate = /(styled\.[\w\d]+|css)$/.test(
+        document.getText(new vscode.Range(document.positionAt(templateExprStart).with(undefined, 0), document.positionAt(templateExprStart))),
+    )
     if (!isInTaggedTemplate) return
 
-    return new vscode.Range(document.positionAt(start).translate(undefined, 1), document.positionAt(end).translate(undefined, -1))
+    return new vscode.Range(document.positionAt(templateExprStart).translate(undefined, 1), document.positionAt(templateExprEnd).translate(undefined, -1))
 }
