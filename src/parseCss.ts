@@ -53,7 +53,9 @@ export const parseCss = (stylesContent: string, offset: number) => {
     } catch (error) {
         if (error.name === 'CssSyntaxError' && error instanceof CssSyntaxError && error.reason === 'Unknown word') {
             const { normalizedStyles, normalizedOffset } = normalizeStylesContent(stylesContent, offset, error)
-            usedRules = findUsedRules(normalizedStyles, normalizedOffset)
+            try {
+                usedRules = findUsedRules(normalizedStyles, normalizedOffset)
+            } catch {}
         }
     }
 
@@ -62,6 +64,8 @@ export const parseCss = (stylesContent: string, offset: number) => {
     }
 }
 
+const maxAttemts = 5
+let attemps = 0
 const normalizeStylesContent = (stylesContent: string, offset: number, error: CssSyntaxError) => {
     const normalizedStyles = stylesContent
         .split(/\n\r?/)
@@ -78,10 +82,18 @@ const normalizeStylesContent = (stylesContent: string, offset: number, error: Cs
         postcssParser(normalizedStyles)
         return { normalizedStyles, normalizedOffset }
     } catch (error) {
-        if (error.name === 'CssSyntaxError' && error instanceof CssSyntaxError && (error.reason === 'Unknown word' || error.reason.includes('Unexpected'))) {
+        if (
+            maxAttemts > attemps &&
+            error.name === 'CssSyntaxError' &&
+            error instanceof CssSyntaxError &&
+            (error.reason === 'Unknown word' || error.reason.includes('Unexpected'))
+        ) {
+            attemps++
             return normalizeStylesContent(normalizedStyles, normalizedOffset, error)
         }
 
         return { normalizedStyles, normalizedOffset }
+    } finally {
+        attemps = 0
     }
 }
