@@ -36,7 +36,7 @@ export const activate = () => {
                 offset: document.offsetAt(position) - document.offsetAt(stylesRange.start),
                 position,
                 startLine: stylesRange.start.line,
-                getWordRangeAtPosition: document.getWordRangeAtPosition,
+                range: document.getWordRangeAtPosition(position, /[-\w\d]+/),
             }
             if (getExtensionSetting('enableStaticShortcuts')) completions.push(...(getShortcuts(virtualDocument) ?? []))
 
