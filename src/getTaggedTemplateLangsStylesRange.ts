@@ -26,6 +26,6 @@ export default async (document: vscode.TextDocument, position: vscode.Position) 
 
         return new vscode.Range(document.positionAt(templateExprStart).translate(undefined, 1), document.positionAt(templateExprEnd).translate(undefined, -1))
     } catch {
-        return null
+        return undefined
     }
 }
