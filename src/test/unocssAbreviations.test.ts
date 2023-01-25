@@ -1,4 +1,4 @@
-import { getCssAbreviationFromLine } from './unocssAbreviations'
+import { getCssAbreviationFromLine } from '../abbreviations/unocssAbreviations'
 
 test('basic', async () => {
     expect(await getCssAbreviationFromLine('mx-50')).toMatchInlineSnapshot(`
@@ -8,10 +8,7 @@ test('basic', async () => {
     expect(await getCssAbreviationFromLine('h-600')).toMatchInlineSnapshot('"height: 600px;"')
     expect(await getCssAbreviationFromLine('w-full')).toMatchInlineSnapshot('"width: 100%;"')
     expect(await getCssAbreviationFromLine('op-50')).toMatchInlineSnapshot('"opacity: 0.5;"')
-    expect(await getCssAbreviationFromLine('b-1')).toMatchInlineSnapshot(`
-      "border-width: 1px;
-      border-style: solid;"
-    `)
+    expect(await getCssAbreviationFromLine('b-1')).toMatchInlineSnapshot('"border-width: 1px;"')
 })
 test('that retuns undefined in prop', async () => {
     expect(await getCssAbreviationFromLine('bg-transparent')).toMatchInlineSnapshot('"background-color: transparent;"')

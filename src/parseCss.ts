@@ -64,7 +64,7 @@ export const parseCss = (stylesContent: string, offset: number) => {
     }
 }
 
-const maxAttemts = 5
+const maxAttemts = 10
 let attemps = 0
 const normalizeStylesContent = (stylesContent: string, offset: number, error: CssSyntaxError) => {
     const normalizedStyles = stylesContent
