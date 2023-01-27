@@ -1,21 +1,12 @@
 import * as vscode from 'vscode'
 import { getStylesRange } from '@zardoy/vscode-utils/build/styles'
 import { getExtensionSetting } from 'vscode-framework'
-import getAbbreviations, { abbreviationShorthand } from './abbreviations/getAbbreviations'
+import getAbbreviations from './abbreviations/getAbbreviations'
 import getShortcuts from './getShortcuts'
 import { SimpleVirtualDocument } from './shared'
 import getTaggedTemplateLangsStylesRange from './getTaggedTemplateLangsStylesRange'
 
 export const activate = () => {
-    vscode.workspace.onDidChangeTextDocument(({ document, contentChanges }) => {
-        if (vscode.window.activeTextEditor?.document.uri !== document.uri || !getExtensionSetting('enableAbbreviation')) return
-        const endPosition = contentChanges[0]?.range.end
-        if (!endPosition) return
-
-        if (/^\w+(-[\w\d]+)*-\d+$/.test(document.lineAt(endPosition).text.trim())) void vscode.commands.executeCommand('editor.action.triggerSuggest')
-
-        abbreviationShorthand.lastIndex = 0
-    })
     const taggedTemplateStylesLangs = new Set(['javascript', 'typescript', 'javascriptreact', 'typescriptreact'])
 
     vscode.languages.registerCompletionItemProvider(['css', 'scss', 'less', 'vue', ...taggedTemplateStylesLangs], {
@@ -40,13 +31,16 @@ export const activate = () => {
             }
             if (getExtensionSetting('enableStaticShortcuts')) completions.push(...(getShortcuts(virtualDocument) ?? []))
 
-            if (getExtensionSetting('enableAbbreviation')) completions.push(...((await getAbbreviations(position, document)) ?? []))
+            const abbreviationsEnabled = getExtensionSetting('enableAbbreviation')
+            if (abbreviationsEnabled) completions.push(...((await getAbbreviations(position, document)) ?? []))
 
             return {
                 items: completions.map(completion => ({
                     ...completion,
                     range: completionRange,
                 })),
+                // todo use different providers for different completion types when vscode bug is fixed
+                isIncomplete: abbreviationsEnabled,
             }
         },
     })

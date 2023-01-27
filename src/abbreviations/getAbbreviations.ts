@@ -2,14 +2,13 @@ import * as vscode from 'vscode'
 import { getCssAbreviationFromLine } from './unocssAbreviations'
 
 // limit support to number-based abbreviations for now
-export const abbreviationShorthand = /^\w+(-[\w\d]+)+$/
 
 // vscode wrapper
 export default async (position: vscode.Position, document: vscode.TextDocument): Promise<vscode.CompletionItem[] | void> => {
     const line = document.lineAt(position)
     const lineText = line.text.trim()
+    const abbreviationShorthand = /^\w+(-[\w\d]+)+$/
     const match = abbreviationShorthand.exec(lineText)
-    abbreviationShorthand.lastIndex = 0
     if (!match) return
     const insertCss = await getCssAbreviationFromLine(lineText)
     if (!insertCss) return
