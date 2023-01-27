@@ -9,12 +9,14 @@ import getTaggedTemplateLangsStylesRange from './getTaggedTemplateLangsStylesRan
 export const activate = () => {
     const taggedTemplateStylesLangs = new Set(['javascript', 'typescript', 'javascriptreact', 'typescriptreact'])
 
+    let previousStaticShortcuts: vscode.CompletionItem[] | undefined
     vscode.languages.registerCompletionItemProvider(['css', 'scss', 'less', 'vue', ...taggedTemplateStylesLangs], {
         async provideCompletionItems(document, position, token, context) {
             const completions: vscode.CompletionItem[] = []
             // exit early on line start
             if (!position.character) return
 
+            // todo cache stylesRange in the same way as previousStaticShortcuts
             const stylesRange = taggedTemplateStylesLangs.has(document.languageId)
                 ? await getTaggedTemplateLangsStylesRange(document, position)
                 : await getStylesRange(document, position)
@@ -22,14 +24,22 @@ export const activate = () => {
             if (!stylesRange) return
 
             const completionRange = document.getWordRangeAtPosition(position, /[-\w\d]+/)
-            const virtualDocument: SimpleVirtualDocument = {
-                fullText: document.getText(stylesRange),
-                lineText: document.lineAt(position).text,
-                offset: document.offsetAt(position) - document.offsetAt(stylesRange.start),
-                position,
-                startLine: stylesRange.start.line,
+            if (getExtensionSetting('enableStaticShortcuts')) {
+                if (!previousStaticShortcuts || context.triggerKind !== vscode.CompletionTriggerKind.TriggerForIncompleteCompletions) {
+                    const virtualDocument: SimpleVirtualDocument = {
+                        fullText: document.getText(stylesRange),
+                        lineText: document.lineAt(position).text,
+                        offset: document.offsetAt(position) - document.offsetAt(stylesRange.start),
+                        position,
+                        startLine: stylesRange.start.line,
+                    }
+                    // for now there is no data is changed in virtualDocument between keystrokes (except for some edge cases, such as api edits)
+                    const shortcuts = getShortcuts(virtualDocument)
+                    previousStaticShortcuts = shortcuts
+                }
+
+                completions.push(...(previousStaticShortcuts ?? []))
             }
-            if (getExtensionSetting('enableStaticShortcuts')) completions.push(...(getShortcuts(virtualDocument) ?? []))
 
             const abbreviationsEnabled = getExtensionSetting('enableAbbreviation')
             if (abbreviationsEnabled) completions.push(...((await getAbbreviations(position, document)) ?? []))
