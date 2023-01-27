@@ -25,7 +25,7 @@
     "contributes": {},
     "scripts": {
         "start": "vscode-framework start",
-        "build": "vscode-framework build",
+        "build": "tsc && vscode-framework build",
         "lint": "eslint src/**",
         "test": "vitest --globals"
     },
