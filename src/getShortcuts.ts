@@ -5,7 +5,7 @@ import { compact } from '@zardoy/utils'
 import { parseCss } from './parseCss'
 import { SimpleVirtualDocument } from './shared'
 
-export default ({ fullText, lineText, offset, range }: SimpleVirtualDocument) => {
+export default ({ fullText, lineText, offset }: SimpleVirtualDocument) => {
     const usedShortcutConfig = {
         main: getExtensionSetting('usedShortcuts.enable'),
         mode: getExtensionSetting('usedShortcuts.mode'),
@@ -69,7 +69,6 @@ export default ({ fullText, lineText, offset, range }: SimpleVirtualDocument) =>
                         'css',
                     ),
                     kind: vscode.CompletionItemKind.Event,
-                    range,
                 }
             }),
     )

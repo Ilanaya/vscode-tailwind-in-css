@@ -5,6 +5,5 @@ export interface SimpleVirtualDocument {
     lineText: string
     position: vscode.Position
     offset: number
-    range: vscode.Range | undefined
     startLine: number
 }

@@ -30,19 +30,24 @@ export const activate = () => {
 
             if (!stylesRange) return
 
+            const completionRange = document.getWordRangeAtPosition(position, /[-\w\d]+/)
             const virtualDocument: SimpleVirtualDocument = {
                 fullText: document.getText(stylesRange),
                 lineText: document.lineAt(position).text,
                 offset: document.offsetAt(position) - document.offsetAt(stylesRange.start),
                 position,
                 startLine: stylesRange.start.line,
-                range: document.getWordRangeAtPosition(position, /[-\w\d]+/),
             }
             if (getExtensionSetting('enableStaticShortcuts')) completions.push(...(getShortcuts(virtualDocument) ?? []))
 
             if (getExtensionSetting('enableAbbreviation')) completions.push(...((await getAbbreviations(position, document)) ?? []))
 
-            return { items: completions }
+            return {
+                items: completions.map(completion => ({
+                    ...completion,
+                    range: completionRange,
+                })),
+            }
         },
     })
 }
