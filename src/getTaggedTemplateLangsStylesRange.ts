@@ -19,12 +19,11 @@ export default async (document: vscode.TextDocument, position: vscode.Position) 
             ({ kindName }) => kindName === 'TemplateExpression' || kindName === 'FirstTemplateToken',
         )
 
-        const isInTaggedTemplate = /(styled\.[\w\d]+|css)$/.test(
-            document.getText(new vscode.Range(document.positionAt(templateExprStart).with(undefined, 0), document.positionAt(templateExprStart))),
-        )
+        const templateStartPos = document.positionAt(templateExprStart)
+        const isInTaggedTemplate = /(styled\.[\w\d]+|css)$/.test(document.getText(new vscode.Range(templateStartPos.with(undefined, 0), templateStartPos)))
         if (!isInTaggedTemplate) return
 
-        return new vscode.Range(document.positionAt(templateExprStart).translate(undefined, 1), document.positionAt(templateExprEnd).translate(undefined, -1))
+        return new vscode.Range(templateStartPos.translate(undefined, 1), document.positionAt(templateExprEnd).translate(undefined, -1))
     } catch {
         return undefined
     }

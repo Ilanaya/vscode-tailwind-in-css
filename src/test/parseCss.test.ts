@@ -52,7 +52,7 @@ test('handles template syntax (FirstTemplateToken sytax kind)', () => {
     const str = `
 const Button = styled.button\`
   display: flex;
-  flex|    
+  flex|
 \``
     const pos = str.indexOf('|')
     const strToParse = str.slice(0, pos) + str.slice(pos + 1)
