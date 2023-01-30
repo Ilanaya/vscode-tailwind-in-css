@@ -44,6 +44,7 @@
         "@zardoy/vscode-utils": "^0.0.17",
         "postcss": "^8.4.14",
         "string-dedent": "^3.0.1",
+        "string-fn": "^3.1.0",
         "vitest": "^0.16.0",
         "vscode-framework": "^0.0.18"
     },

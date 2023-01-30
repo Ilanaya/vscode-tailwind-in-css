@@ -12,6 +12,7 @@ specifiers:
   eslint-config-zardoy: ^0.2.11
   postcss: ^8.4.14
   string-dedent: ^3.0.1
+  string-fn: ^3.1.0
   typescript: ^4.6.4
   vitest: ^0.16.0
   vscode-framework: ^0.0.18
@@ -23,6 +24,7 @@ dependencies:
   '@zardoy/vscode-utils': 0.0.17_unawbvmxtbzqonmqpdnuuihcuq
   postcss: 8.4.14
   string-dedent: 3.0.1
+  string-fn: 3.1.0
   vitest: 0.16.0
   vscode-framework: 0.0.18_7z6inc52bbdzqfvbvz5ml4oycq
 
@@ -3693,6 +3695,10 @@ packages:
     resolution: {integrity: sha512-bPK8sSiVHIC7CqdWga8R+hRi5hfc4hK6S01lZW4KrLwSNryQoKaCOJA9GNiF20J7Nbe1vejRfR37/ASQXFL5EA==}
     dev: false
 
+  /rambdax/7.0.1:
+    resolution: {integrity: sha512-Xrrp45dg1PLt40LMcjfNyVDcPBndzpR2t+AXGAcc9iqU9lD9bnk/b1B+n4W5tFXoSKDmZmgckcA8ajgVzbtxGA==}
+    dev: false
+
   /react-is/17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
     dev: false
@@ -3993,6 +3999,12 @@ packages:
   /string-dedent/3.0.1:
     resolution: {integrity: sha512-A2zCXSgpPrpFi1lDJlDwIPYakBWeDtQZ8ZBKssB8M/WbtNEKTzsl1yCDRmHx55jSB27xZDQ6NOtRYekESWx6fw==}
     engines: {node: '>=0.12.0'}
+    dev: false
+
+  /string-fn/3.1.0:
+    resolution: {integrity: sha512-LFje5UeJH6t0XILNbwjUWctL5aU9yDKz8ILPzKVHDgw6ZGR8ebulvRD0zjUVEGKzCNxi1IzJK63/HR+7Q9HQQQ==}
+    dependencies:
+      rambdax: 7.0.1
     dev: false
 
   /string-width/4.2.3:

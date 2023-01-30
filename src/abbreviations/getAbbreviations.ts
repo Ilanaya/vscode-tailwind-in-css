@@ -1,4 +1,5 @@
 import * as vscode from 'vscode'
+import { indent } from 'string-fn'
 import { getCssAbreviationFromLine } from './unocssAbreviations'
 
 // limit support to number-based abbreviations for now
@@ -17,13 +18,7 @@ export default async (position: vscode.Position, document: vscode.TextDocument):
             label: match[0]!,
             insertText: insertCss,
             sortText: '0',
-            documentation: new vscode.MarkdownString().appendCodeblock(
-                `.${match[0]!} {\n${insertCss
-                    .split('\n')
-                    .map(str => `${' '.repeat(2)}${str}`)
-                    .join('\n')}\n}`,
-                'css',
-            ),
+            documentation: new vscode.MarkdownString().appendCodeblock(`.${match[0]!} {\n${indent(insertCss, 2)}\n}`, 'css'),
         },
     ]
 }
