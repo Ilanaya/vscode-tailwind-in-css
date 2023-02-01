@@ -3,7 +3,7 @@ import { parseCss } from '../parseCss'
 import type {} from 'vitest/globals'
 
 test('works', () => {
-    const str = `
+    const str = /*scss*/ `
 .test {
     display: flex;
     |
@@ -21,7 +21,7 @@ test('works', () => {
     `)
 })
 test('works with incorrect syntax', () => {
-    const str = `
+    const str = /*scss*/ `
 .test {
     display: flex;
     flex|
@@ -39,7 +39,7 @@ test('works with incorrect syntax', () => {
     `)
 })
 test('throws with incorrent syntax', () => {
-    const str = `
+    const str = /*scss*/ `
 .test {
     display: flex;
     flex|
@@ -49,7 +49,7 @@ test('throws with incorrent syntax', () => {
     expect(parseCss(strToParse, pos)).not.toThrowErrorMatchingInlineSnapshot(`"expected is not a function"`)
 })
 test('handles template syntax (FirstTemplateToken sytax kind)', () => {
-    const str = `
+    const str = /*ts*/ `
 const Button = styled.button\`
   display: flex;
   flex|
@@ -69,7 +69,7 @@ const Button = styled.button\`
     `)
 })
 test('works in TemplateHead node kind case', () => {
-    const str = `
+    const str = /*ts*/ `
 const Button = styled.button\`
   display: flex;
   flex|
@@ -93,7 +93,7 @@ const Button = styled.button\`
     `)
 })
 test('works in TemplateMiddle node kind case', () => {
-    const str = `
+    const str = /*ts*/ `
 const Button2 = styled.button\`
   display: flex;
   \${props =>
@@ -121,7 +121,7 @@ const Button2 = styled.button\`
     `)
 })
 test('works in LastTemplateToken node kind case', () => {
-    const str = `
+    const str = /*ts*/ `
 const Button5 = styled.button\`
   display: flex;
   \${props =>
@@ -149,7 +149,7 @@ const Button5 = styled.button\`
     `)
 })
 test('fails on big style blocks with PostCSS syntax errors', () => {
-    const str = `
+    const str = /*ts*/ `
 const Button2 = styled.button\`
     display: flex;
     \${props =>
