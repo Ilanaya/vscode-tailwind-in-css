@@ -10,12 +10,20 @@ export default ({ fullText, lineText, offset }: SimpleVirtualDocument) => {
         main: getExtensionSetting('usedShortcuts.enable'),
         mode: getExtensionSetting('usedShortcuts.mode'),
     }
+    const modifySuggestions = getExtensionSetting('modifySuggestions')
+    const customRules = Object.entries(getExtensionSetting('customShortcuts')).map(([name, value]) => [
+        name,
+        value
+            .split(';')
+            .filter(Boolean)
+            .map(line => line.split(':').map(s => s.trim()) as [string, string]),
+    ])
 
     // TODO measure parsing time on big stylesheets
-    const { usedRules } = parseCss(fullText, offset)
+    const { usedRules } = usedShortcutConfig.main === 'disable' ? { usedRules: new Map() } : parseCss(fullText, offset)
     if (!/^\s*(\w|-)*\s*$/.test(lineText)) return
     return compact(
-        rules
+        [...rules, ...customRules]
             .filter(rule => typeof rule[0] === 'string' && typeof rule[1] === 'object')
             .map(([shortcut, rule]): vscode.CompletionItem | undefined => {
                 const cssDeclarations = (Array.isArray(rule) ? rule : Object.entries(rule)).filter(([prop, value], i, rulesArr) => {
@@ -34,34 +42,34 @@ export default ({ fullText, lineText, offset }: SimpleVirtualDocument) => {
 
                 const cssRules = cssDeclarations.map(([prop, value]) => {
                     if (typeof value === 'number') value = `${value.toString()}px`
-                    return `${prop}: ${value!};`
+                    return `${prop}: ${value};`
                 })
 
                 const label = shortcut as string
-                const usedShortcut = cssDeclarations.every(
-                    ([prop, value]) =>
-                        usedShortcutConfig.main !== 'disable' &&
-                        (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value),
+                const usedShortcut = cssDeclarations.every(([prop, value]) =>
+                    usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value,
                 )
 
                 if (usedShortcut && usedShortcutConfig.main === 'remove') return undefined
                 const cssRulesString = cssRules.join('\n')
+                const patch = modifySuggestions[label]
+                if (patch === false) return undefined
                 return {
-                    label,
+                    label: patch?.name ?? label,
                     insertText: cssRulesString,
                     tags: usedShortcut ? [vscode.CompletionItemTag.Deprecated] : [],
                     // TODO button using markdown syntax (replace n rules) and shortcut for replacing these used rules
                     documentation: new vscode.MarkdownString().appendCodeblock(
                         `.${label} {\n${cssDeclarations
                             .map(([prop, value]) => {
-                                const rule = `${prop}: ${value!};`
+                                const rule = `${prop}: ${value};`
                                 if (usedShortcutConfig.main === 'disable' || usedShortcutConfig.main === 'remove') return `${' '.repeat(2)}${rule}`
 
                                 const currentShortcutOffset = usedRules.get(prop)?.offset
 
                                 return `${' '.repeat(2)}${rule} ${
                                     (usedShortcutConfig.mode === 'only-rule' ? usedRules.get(prop) : usedRules.get(prop)?.value === value)
-                                        ? `//L${getLineByOffset(fullText, currentShortcutOffset!)!}`
+                                        ? `//L${getLineByOffset(fullText, currentShortcutOffset)!}`
                                         : ''
                                 }`
                             })
@@ -69,6 +77,7 @@ export default ({ fullText, lineText, offset }: SimpleVirtualDocument) => {
                         'css',
                     ),
                     kind: vscode.CompletionItemKind.Event,
+                    sortText: patch?.sortText,
                 }
             }),
     )
