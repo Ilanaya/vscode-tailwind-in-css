@@ -19,9 +19,6 @@
         "onLanguage:javascriptreact",
         "onLanguage:typescriptreact"
     ],
-    "extensionDependencies": [
-        "zardoy.ts-essential-plugins"
-    ],
     "contributes": {},
     "scripts": {
         "start": "vscode-framework start",

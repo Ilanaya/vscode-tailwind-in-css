@@ -30,3 +30,7 @@ Default theme is from [wind preset](https://github.com/unocss/unocss/blob/main/p
 ### Why not Emmet Abbreviations?
 
 Emmet abbreviations are cool for something like `w50`, `f12`. You can still use it, but it can't handle something more advanced like `mx-500`
+
+
+### Extension supports JS/TS with [Typescript Essential Plugins](https://marketplace.visualstudio.com/items?itemName=zardoy.ts-essential-plugins) installed.
+Consider installing it if you're looking for writing styles in tailwind-like syntax when using e.g. [styled components](https://styled-components.com/)
