@@ -14,15 +14,9 @@ test('that retuns undefined in prop', async () => {
     expect(await getCssAbreviationFromLine('bg-transparent')).toMatchInlineSnapshot('"background-color: transparent;"')
     expect(await getCssAbreviationFromLine('bg-transparen')).toMatchInlineSnapshot('undefined')
 })
-test.todo('basic colors', async () => {
-    expect(await getCssAbreviationFromLine('c-black')).toMatchInlineSnapshot(`
-      "--un-text-opacity: 1;
-      color: rgba(0,0,0,var(--un-text-opacity));"
-    `)
-    expect(await getCssAbreviationFromLine('bg-black')).toMatchInlineSnapshot(`
-      "--un-bg-opacity: 1;
-      background-color: rgba(0,0,0,var(--un-bg-opacity));"
-    `)
+test('variables gets inlined', async () => {
+    expect(await getCssAbreviationFromLine('c-black')).toMatchInlineSnapshot('"color: rgba(0,0,0,1);"')
+    expect(await getCssAbreviationFromLine('bg-black')).toMatchInlineSnapshot('"background-color: rgba(0,0,0,1);"')
 })
 test.skip('colors', async () => {
     expect(await getCssAbreviationFromLine('c-black')).toMatchInlineSnapshot()
