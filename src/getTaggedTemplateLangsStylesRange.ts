@@ -13,18 +13,18 @@ export default async (document: vscode.TextDocument, position: vscode.Position) 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ((await vscode.commands.executeCommand('tsEssentialPlugins.getNodePath', { offset: document.offsetAt(position) })) as any) ?? {}
 
-        if (!supportedSyntaxKinds.has(nodes[nodes.length - 1].kindName)) return
+        const { start, end, kindName } = nodes[nodes.length - 1]
+        if (!supportedSyntaxKinds.has(kindName)) return
 
-        const { start: templateExprStart, end: templateExprEnd } = nodes.find(
-            ({ kindName }) => kindName === 'TemplateExpression' || kindName === 'FirstTemplateToken',
-        )
+        const { start: templateExprStart } = nodes.find(({ kindName }) => kindName === 'TemplateExpression' || kindName === 'FirstTemplateToken')
 
         const templateStartPos = document.positionAt(templateExprStart)
         const isInTaggedTemplate = /(styled\.[\w\d]+|css)$/.test(document.getText(new vscode.Range(templateStartPos.with(undefined, 0), templateStartPos)))
         if (!isInTaggedTemplate) return
 
-        return new vscode.Range(templateStartPos.translate(undefined, 1), document.positionAt(templateExprEnd).translate(undefined, -1))
-    } catch {
+        return new vscode.Range(document.positionAt(start), document.positionAt(end))
+    } catch (error) {
+        console.error(error)
         return undefined
     }
 }
