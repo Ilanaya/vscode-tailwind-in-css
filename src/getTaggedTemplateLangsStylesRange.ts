@@ -22,7 +22,7 @@ export default async (document: vscode.TextDocument, position: vscode.Position) 
         const isInTaggedTemplate = /(styled\.[\w\d]+|css)$/.test(document.getText(new vscode.Range(templateStartPos.with(undefined, 0), templateStartPos)))
         if (!isInTaggedTemplate) return
 
-        return new vscode.Range(document.positionAt(start), document.positionAt(end))
+        return new vscode.Range(document.positionAt(start).translate(undefined, 1), document.positionAt(end).translate(undefined, -1))
     } catch (error) {
         console.error(error)
         return undefined
