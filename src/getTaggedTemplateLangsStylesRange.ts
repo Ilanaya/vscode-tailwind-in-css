@@ -23,8 +23,7 @@ export default async (document: vscode.TextDocument, position: vscode.Position) 
         if (!isInTaggedTemplate) return
 
         return new vscode.Range(document.positionAt(start).translate(undefined, 1), document.positionAt(end).translate(undefined, -1))
-    } catch (error) {
-        console.error(error)
+    } catch {
         return undefined
     }
 }

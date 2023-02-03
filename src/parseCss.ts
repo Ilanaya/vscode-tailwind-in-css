@@ -64,8 +64,6 @@ export const parseCss = (stylesContent: string, offset: number) => {
     }
 }
 
-const maxAttemts = 10
-let attemps = 0
 const normalizeStylesContent = (stylesContent: string, offset: number, error: CssSyntaxError) => {
     const normalizedStyles = stylesContent
         .split(/\n\r?/)
@@ -78,22 +76,5 @@ const normalizeStylesContent = (stylesContent: string, offset: number, error: Cs
         })
         .join('\n')
     const normalizedOffset = offset - (error.input!.endColumn ?? 0)
-    try {
-        postcssParser(normalizedStyles)
-        return { normalizedStyles, normalizedOffset }
-    } catch (error) {
-        if (
-            maxAttemts > attemps &&
-            error.name === 'CssSyntaxError' &&
-            error instanceof CssSyntaxError &&
-            (error.reason === 'Unknown word' || error.reason.includes('Unexpected'))
-        ) {
-            attemps++
-            return normalizeStylesContent(normalizedStyles, normalizedOffset, error)
-        }
-
-        return { normalizedStyles, normalizedOffset }
-    } finally {
-        attemps = 0
-    }
+    return { normalizedStyles, normalizedOffset }
 }
