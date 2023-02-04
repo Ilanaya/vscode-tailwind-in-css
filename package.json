@@ -18,7 +18,8 @@
     "contributes": {},
     "scripts": {
         "start": "vscode-framework start",
-        "build": "vscode-framework build",
+        "build": "tsc && vscode-framework build",
+        "prettier": "prettier --check \"src/**/*.{ts,tsx,ts}\" --ignore-path .gitignore",
         "lint": "eslint src/**",
         "test": "vitest --globals"
     },
