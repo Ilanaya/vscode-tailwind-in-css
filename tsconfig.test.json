@@ -1,0 +1,14 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "testsOut",
+        "rootDir": "src/test/integration",
+        "noEmit": false
+    },
+    "include": [
+        "src/test/integration"
+    ],
+    // "exclude": [
+    //     "test/integration/fixtures"
+    // ]
+}
