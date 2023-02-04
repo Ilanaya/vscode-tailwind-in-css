@@ -4,7 +4,7 @@ import { runTests } from '@vscode/test-electron'
 async function main() {
     try {
         await runTests({
-            version: 'stable',
+            version: 'insiders',
             extensionDevelopmentPath: join(__dirname, '../out'),
             extensionTestsPath: join(__dirname, './index'),
             launchArgs: [],
