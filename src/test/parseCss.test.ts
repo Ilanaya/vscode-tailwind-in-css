@@ -1,9 +1,9 @@
-import { parseCss } from './parseCss'
+import { parseCss } from '../parseCss'
 
 import type {} from 'vitest/globals'
 
 test('works', () => {
-    const str = /* scss*/ `
+    const str = /*scss*/ `
 .test {
     display: flex;
     |
@@ -20,8 +20,8 @@ test('works', () => {
       }
     `)
 })
-test('works with incorrect syntax', () => {
-    const str = /* scss*/ `
+test('works after calling suggestions after typing single line', () => {
+    const str = /*scss*/ `
 .test {
     display: flex;
     flex|
@@ -38,13 +38,16 @@ test('works with incorrect syntax', () => {
       }
     `)
 })
-test('throws with incorrent syntax', () => {
-    const str = /* scss*/ `
-.test {
-    display: flex;
-    flex|
-}`
+test('returns empty used rules with more then one css syntax error', () => {
+    const str = /*scss*/ `
+  .test {
+      display: flex;
+      flex|
+      foo
+  }`
     const pos = str.indexOf('|')
     const strToParse = str.slice(0, pos) + str.slice(pos + 1)
-    expect(parseCss(strToParse, pos)).not.toThrowErrorMatchingInlineSnapshot(`"expected is not a function"`)
+    const { usedRules } = parseCss(strToParse, pos)
+
+    expect(usedRules).toStrictEqual(new Map())
 })

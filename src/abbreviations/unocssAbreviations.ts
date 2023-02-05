@@ -17,7 +17,9 @@ const context: RuleContext = {
     variantMatch: {} as any,
 }
 
-export const getCssAbreviationFromLine = async (lineText: string): Promise<string | void> => {
+interface OptionalConfig {}
+
+export const getCssAbreviationFromLine = async (lineText: string, config: OptionalConfig = {}): Promise<string | void> => {
     // eslint-disable-next-line curly
     for (const rule of rules) {
         if (rule[0] instanceof RegExp) {
@@ -34,9 +36,16 @@ export const getCssAbreviationFromLine = async (lineText: string): Promise<strin
                 const normalizeCssValue = (cssValue: any /* CSSValue */): string | undefined => {
                     if (typeof cssValue === 'string') return cssValue
                     if (!Array.isArray(cssValue)) cssValue = Object.entries(cssValue) as any
+                    const vars: Record<string, boolean> = {}
                     return cssValue
                         .map(([prop, value]) => {
                             if (value === undefined) return undefined
+                            if (prop.startsWith('--')) {
+                                vars[prop] = value
+                                return undefined
+                            }
+
+                            value = value.replace(/var\((--[\w\d-]+)\)/g, (_, v) => vars[v] ?? `var(${v})`)
                             const remRE = /^-?[.\d]+rem$/
                             if (valueInPx && remRE.test(value)) value = `${valueInPx}px`
                             return `${prop}: ${value};`

@@ -11,7 +11,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - run: npx prettier --check src/**
       - name: Cache pnpm modules
         uses: actions/cache@v2
         with:
@@ -24,10 +23,11 @@ jobs:
           version: latest
           run_install: |
             args: [--frozen-lockfile, --strict-peer-dependencies]
+      - run: npm run prettier
       - run: pnpm lint
       - run: pnpm tsc
       - run: pnpm vscode-utils prepareFrameworkBuild
       - run: pnpm build
-      # - uses: GabrielBB/xvfb-action@v1.6
-      #   with:
-      #     run: pnpm integration-test
+      - uses: GabrielBB/xvfb-action@v1.6
+        with:
+          run: pnpm integration-test
