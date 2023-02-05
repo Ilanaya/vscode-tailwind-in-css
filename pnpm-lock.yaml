@@ -20,6 +20,7 @@ specifiers:
   glob: ^8.1.0
   mocha: ^10.2.0
   postcss: ^8.4.14
+  prettier: ^2.8.3
   string-dedent: ^3.0.1
   string-fn: ^3.1.0
   typescript: ^4.6.4
@@ -52,6 +53,7 @@ devDependencies:
   eslint: 8.16.0
   eslint-config-zardoy: 0.2.11_utdtartgf6fqqgkivzeynh76la
   mocha: 10.2.0
+  prettier: 2.8.3
   typescript: 4.6.4
 
 packages:
@@ -3898,6 +3900,12 @@ packages:
   /prelude-ls/1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+    dev: true
+
+  /prettier/2.8.3:
+    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
     dev: true
 
   /pretty-format/27.5.1:

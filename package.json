@@ -40,7 +40,8 @@
         "eslint": "^8.16.0",
         "eslint-config-zardoy": "^0.2.11",
         "mocha": "^10.2.0",
-        "typescript": "^4.6.4"
+        "typescript": "^4.6.4",
+        "prettier": "^2.8.3"
     },
     "dependencies": {
         "@unocss/core": "^0.48.4",
