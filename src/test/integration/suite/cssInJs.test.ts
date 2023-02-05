@@ -18,6 +18,9 @@ describe('CSS-in-JS', () => {
                 \${'...'/* absolutely don't care */}
             \`
         `
+        const pos = file.indexOf('|')
+        const fileToParse = file.slice(0, pos) + file.slice(pos + 1)
+        const editor = await vscode.window.showTextDocument(await vscode.workspace.openTextDocument({ language: 'typescriptreact', content: fileToParse }))
         // workaround for error: missing gallery
         await delay(1000)
         try {
@@ -30,9 +33,6 @@ describe('CSS-in-JS', () => {
 
         const config = vscode.workspace.getConfiguration('tailwindInCss')
         await config.update('usedShortcuts.mode', 'only-rule', true)
-        const pos = file.indexOf('|')
-        const fileToParse = file.slice(0, pos) + file.slice(pos + 1)
-        const editor = await vscode.window.showTextDocument(await vscode.workspace.openTextDocument({ language: 'typescriptreact', content: fileToParse }))
         const { document } = editor
         const completions = await vscode.commands.executeCommand<vscode.CompletionList>(
             'vscode.executeCompletionItemProvider',
