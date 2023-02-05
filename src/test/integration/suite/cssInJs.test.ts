@@ -6,7 +6,7 @@ describe('CSS-in-JS', () => {
     // todo make optional with is-online
     it('works', async function () {
         // installing extension takes a lot of time
-        this.timeout(7000)
+        this.timeout(15_000)
         const file = /* tsx */ `
             css\`
                 display: flex;
